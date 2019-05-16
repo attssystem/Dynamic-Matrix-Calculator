@@ -1,55 +1,54 @@
 import java.util.Scanner;
-//import org.fusesource.jansi.AnsiConsole;
-//import static org.fusesource.jansi.Ansi.*;
-//import static org.fusesource.jansi.Ansi.Color.*;
 
 public class MainMatrix {
 	
 	public static void main (String args[]) {
 		boolean quit = false;
+		Matrix[] matricesTab = new Matrix[1];
         
         Scanner sc = new Scanner(System.in);
-        //AnsiConsole.systemInstall();
         
-        //System.out.println( ansi().eraseScreen().fg(RED).a("Hello").fg(GREEN).a(" World").reset() );
+        Matrix m = new Matrix(3,3);
+        matricesTab[0] = m;
+        showMatrix(0, matricesTab);
+        
+        
         
         while(!quit) {
              //doOperation(sc.next());
         }
         
-        //System.out.println(ansi().eraseScreen());
         System.out.println("Thanks for using");
         sc.close();
-        //AnsiConsole.systemUninstall();
 	}
     
-     /*Can't use without Matrix Object
+    // Can't use without Matrix Object
   
 	// Show all matrices
 	
-    public static void showMatrices() {
-        for(int i = 0; imatricesTab.length; i++) {
-            showMatrix(i);
+    public static void showMatrices(Matrix[] matricesTab) {
+        for(int i = 0; i < matricesTab.length; i++) {
+            showMatrix(i, matricesTab);
             System.out.println();
         }
     }
     
     // Show one identified matrix
     
-    public static void showMatrix(int id) {
-        System.out.println(matrices[id].name);
-        for(int i = 0; i  matrices[id].length; i++) {
-			System.out.print([);
-            for(int j = 0; j  matrices[id].length; i++) {
-				System.out.print( +matrices[id][i][j]+ );
+    public static void showMatrix(int id, Matrix[] matricesTab) {
+        System.out.println(matricesTab[id].name);
+        for(int i = 0; i < matricesTab[id].data.length; i++) {
+			System.out.print("[");
+            for(int j = 0; j < matricesTab[id].data.length; j++) {
+				System.out.print(" "+matricesTab[id].data[i][j]+" ");
 			}
-			System.out.print(]);
+			System.out.println("]");
 		}
     }
     
     // Look for a specific matrix using his name
     
-    public static int searchMatrix(String name) {
+    public static int searchMatrix(String name, Matrix[] matricesTab) {
         int id = -1;
         int i = 0;
         while(id == -1) {
@@ -65,18 +64,23 @@ public class MainMatrix {
 	
 	public static void updateTab(Matrix[] tab, Matrix m) {
 		Matrix[] newTab = new Matrix[tab.length+1];
-		for(int i = 0; i  tab.length; i++) {
+		for(int i = 0; i < tab.length; i++) {
 			newTab[i] = tab[i];
 		}
 		newTab[tab.length] = m;
 		tab = newTab;
-	}  */
+	}
 	
+	// Dynamic Editor
+	
+	public static void dynamicEditor(Matrix m) {
+		
+	}
+	
+	// Clear the screen
 	
 	public static void clearScreen() {  
 		System.out.print("\033[H\033[2J");  
 		System.out.flush();  
-	}  
+	}
 }
-
-// Thanks fusesource for JANSI (APACHE 2 License) httpsgithub.comfusesourcejansi
