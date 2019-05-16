@@ -6,20 +6,42 @@ public class MainMatrix {
 	public static void main (String args[]) {
 		boolean quit = false;
 		Matrix[] matricesTab = new Matrix[1];
+		String cmd;
+		String info;
         
         Scanner sc = new Scanner(System.in);
         
         // Tests
         
-        Matrix m = new Matrix(3,3, "TEST");
+        /*Matrix m = new Matrix(3,3, "TEST");
         matricesTab[0] = m;
 		showMatrix(0, matricesTab,true);
-		dynamicEditor("TEST", matricesTab, sc);
-        
-        
+		dynamicEditor("TEST", matricesTab, sc);*/
+		
+		// Starting UI
+		
+		clearScreen();
+		info = "To begin, you can create your first Matrix using the 'CREATE' command\nand by letting the program guide you through the creation process,\nthen you can use 'EDIT', 'CALC', 'CREATE' again or 'QUIT'.";
+		System.out.println();
         
         while(!quit) {
-             //doOperation(base_sc.next());
+			System.out.println("Info : "+info);
+			System.out.print("CMD>");
+			cmd = sc.next();
+			Scanner mainWhile_sc = new Scanner(cmd);
+			clearScreen();
+			if(mainWhile_sc.hasNext("EDIT") || mainWhile_sc.hasNext("edit")){
+				//
+			}else if(mainWhile_sc.hasNext("CALC") || mainWhile_sc.hasNext("calc")){
+				//doOperation();
+			}else if(mainWhile_sc.hasNext("CREATE") || mainWhile_sc.hasNext("create")){
+				//CreateMatrix();
+			}else if(mainWhile_sc.hasNext("QUIT") || mainWhile_sc.hasNext("quit")){
+				quit = true;
+			}else{
+				info = "Unknown command, try 'CREATE', 'EDIT', 'CALC' or 'QUIT'";
+			}
+            clearScreen();
         }
         
         System.out.println("Thanks for using");
@@ -101,21 +123,24 @@ public class MainMatrix {
 			System.out.println("------------------");
 			System.out.println("| Info :"+com);
 			showMatrix(searchMatrix("TEST", matricesTab), matricesTab, true);
+			System.out.print("DynEdit_CMD> ");
 			input = sc.next();
 			// Write text will stop program !
 			Scanner dynEdit_sc = new Scanner(input);
 			dynEdit_sc.useDelimiter(",");
 			a = dynEdit_sc.nextInt();
-			b = dynEdit_sc.nextInt();
-			c = dynEdit_sc.nextInt();
-			dynEdit_sc.close();
 			if(a == 0) {
 				quit = true;
-			}else if(a <= matricesTab[id].data.length && 0 < a && b <= matricesTab[id].data[a].length && 0 < b) {
-				matricesTab[id].data[a-1][b-1] = c;
-				com = "Change done !";
-			}else {
-				com = "Wrong input, retry";
+			}else{
+				b = dynEdit_sc.nextInt();
+				c = dynEdit_sc.nextInt();
+				dynEdit_sc.close();
+				if(a <= matricesTab[id].data.length && 0 < a && b <= matricesTab[id].data[a].length && 0 < b) {
+					matricesTab[id].data[a-1][b-1] = c;
+					com = "Change done !";
+				}else {
+					com = "Wrong input, retry";
+				}
 			}
 		}
 	}
@@ -126,5 +151,11 @@ public class MainMatrix {
 		for(int i = 0; i < 30; i++) {
 			System.out.println();
 		}
+		System.out.println("-----------------------------------");
+		System.out.println("| INSA MATRIX CALCULATOR & EDITOR |");
+		System.out.println("|    Maths at your fingertips     |");
+		System.out.println("-----------------------------------");
+		System.out.println();
+		System.out.println();
 	}
 }
