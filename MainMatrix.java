@@ -86,7 +86,7 @@ public class MainMatrix {
 	// Dynamic Editor
 	
 	public static void dynamicEditor(String name, Matrix[] matricesTab, Scanner sc) {
-		String com = "Type x y new_value or 0 to leave";
+		String com = "Type x,y,new_value or 0 to leave";
 		boolean quit = false;
 		String input;
 		int a;
