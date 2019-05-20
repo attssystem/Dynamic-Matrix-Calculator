@@ -16,12 +16,7 @@ public class MainMatrix {
         
         // Tests
         
-        //Matrix m = new Matrix(3,3, "test");
-        matricesTab = updateTab(matricesTab, new Matrix(3,3,"TEST"));
-        //matricesTab[0] = new Matrix(3,3, "TEST");
-        //matricesTab[1] = new Matrix(4,4, "TEST1");
-		//showMatrix(0, matricesTab,true, true, sc);
-		//dynamicEditor("TEST", matricesTab, sc);
+        matricesTab = updateTab(matricesTab, new Matrix(3,3,"TEST", true));
 		
 		// Starting UI
 		
@@ -52,16 +47,18 @@ public class MainMatrix {
 				b = size_sc.nextInt();
 				System.out.print("Which name ?>");
 				name = sc.next();
-				updateTab(matricesTab, new Matrix(a, b, name));
 				System.out.print("How ? 'RANDOM', 'VECTORIAL' or 'CUSTOMISED' ? >");
 				cmd = sc.next();
 				Scanner createWhile_sc = new Scanner(cmd);
 				if(createWhile_sc.hasNext("RANDOM") || createWhile_sc.hasNext("random")){
-					System.out.println("Your matrix "+name+" has been successfully generated !");
+					matricesTab = updateTab(matricesTab, new Matrix(a, b, name, true));
+					showMatrix(searchMatrix(name, matricesTab), matricesTab, false, true, sc);
 				}else if(createWhile_sc.hasNext("VECTORIAL") || createWhile_sc.hasNext("vectorial")){
-					
-				}else if(createWhile_sc.hasNext("CUSTOMIZED") || createWhile_sc.hasNext("customized")){
-					
+					matricesTab = updateTab(matricesTab, new Matrix(a, b, name, false));
+					//Need to add vectors
+				}else if(createWhile_sc.hasNext("CUSTOMISED") || createWhile_sc.hasNext("customised")){
+					matricesTab = updateTab(matricesTab, new Matrix(a, b, name, false));
+					dynamicEditor(name, matricesTab, sc, info);
 				}else{
 					info = "Unknown command, went back to main menu";
 				}
@@ -77,7 +74,7 @@ public class MainMatrix {
 			}else if(mainWhile_sc.hasNext("QUIT") || mainWhile_sc.hasNext("quit")){
 				quit = true;
 			}else{
-				info = "Unknown command, try 'CREATE', 'EDIT', 'CALC' or 'QUIT'";
+				info = "Unknown command, try 'CREATE', 'EDIT', 'CALC', 'SHOW', 'SHOW_ALL' or 'QUIT'";
 			}
             clearScreen();
         }

@@ -3,19 +3,21 @@ public class Matrix{
 	int[][] data;
     String name;
     
-	public Matrix (int l, int n, String na) { //Génération aléatoire avec nombre de ligne et de colonne données
+	public Matrix (int l, int n, String na, boolean rand) { //Génération aléatoire avec nombre de ligne et de colonne données
     	this.data = new int [l][n];
     	this.name = na;
-    	for (int i=0;i<this.data.length;i++){
-        	for (int j=0; j<this.data[i].length;j++){
-        	this.data[i][j]=(int)(Math.random()*100); //entre 0 et 99    	 
-        	}
+    	if(rand) {
+			for (int i=0;i<this.data.length;i++){
+				for (int j=0; j<this.data[i].length;j++){
+				this.data[i][j]=(int)(Math.random()*100); //entre 0 et 99    	 
+				}
+			}
     	}
 	}
     
     
 	public Matrix transpose(){
-   	 Matrix m01T = new Matrix(this.data[0].length,this.data.length, "temp");
+   	 Matrix m01T = new Matrix(this.data[0].length,this.data.length, "temp", true);
    	 for (int i=0;i<this.data.length;i++){
    		 for (int j=0;j<this.data[0].length;j++){
    			 m01T.data[j][i]=this.data[i][j];
