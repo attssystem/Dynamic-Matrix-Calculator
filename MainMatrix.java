@@ -4,7 +4,7 @@ public class MainMatrix {
 	
 	public static void main (String args[]) {
 		boolean quit = false;
-		Matrix[] matricesTab = new Matrix[1];
+		Matrix[] matricesTab = new Matrix[2];
 		String cmd;
 		String info;
         
@@ -12,8 +12,9 @@ public class MainMatrix {
         
         // Tests
         
-        Matrix m = new Matrix(3,3, "test");
-        matricesTab[0] = m;
+        //Matrix m = new Matrix(3,3, "test");
+        matricesTab[0] = new Matrix(3,3, "TEST");
+        matricesTab[1] = new Matrix(4,4, "TEST1");
 		//showMatrix(0, matricesTab,true, true, sc);
 		//dynamicEditor("TEST", matricesTab, sc);
 		
@@ -29,7 +30,7 @@ public class MainMatrix {
 			cmd = sc.next();
 			Scanner mainWhile_sc = new Scanner(cmd);
 			clearScreen();
-			if(mainWhile_sc.hasNext("EDIT") || mainWhile_sc.hasNext("edit")){
+			if(sc.hasNext("EDIT") || sc.hasNext("edit")){
 				System.out.print("Matrix Name ? >");
 				cmd = sc.next();
 				if(!dynamicEditor(cmd, matricesTab, sc, info)){
@@ -38,7 +39,19 @@ public class MainMatrix {
 			}else if(mainWhile_sc.hasNext("CALC") || mainWhile_sc.hasNext("calc")){
 				//doOperation();
 			}else if(mainWhile_sc.hasNext("CREATE") || mainWhile_sc.hasNext("create")){
-				//CreateMatrix();
+				System.out.print("Which size ? >");
+				System.out.print("'RANDOM', 'VECTORIAL' or 'CUSTOMISED' ? >");
+				cmd = sc.next();
+				Scanner createWhile_sc = new Scanner(cmd);
+				if(createWhile_sc.hasNext("RANDOM") || createWhile_sc.hasNext("random")){
+					
+				}else if(createWhile_sc.hasNext("VECTORIAL") || createWhile_sc.hasNext("vectorial")){
+					
+				}else if(createWhile_sc.hasNext("CUSTOMIZED") || createWhile_sc.hasNext("customized")){
+					
+				}else{
+					info = "Unknown command, went back to main menu";
+				}
 			}else if(mainWhile_sc.hasNext("SHOW_ALL") || mainWhile_sc.hasNext("show_all")){
 				showMatrices(matricesTab, sc);
 			}
