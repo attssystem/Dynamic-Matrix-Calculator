@@ -1,20 +1,25 @@
 import java.util.Scanner;
+import java.util.Arrays; 
 
 public class MainMatrix {
 	
 	public static void main (String args[]) {
 		boolean quit = false;
-		Matrix[] matricesTab = new Matrix[2];
+		Matrix[] matricesTab = new Matrix[0];
 		String cmd;
 		String info;
+		int a;
+		int b;
+		String name;
         
         Scanner sc = new Scanner(System.in);
         
         // Tests
         
         //Matrix m = new Matrix(3,3, "test");
-        matricesTab[0] = new Matrix(3,3, "TEST");
-        matricesTab[1] = new Matrix(4,4, "TEST1");
+        matricesTab = updateTab(matricesTab, new Matrix(3,3,"TEST"));
+        //matricesTab[0] = new Matrix(3,3, "TEST");
+        //matricesTab[1] = new Matrix(4,4, "TEST1");
 		//showMatrix(0, matricesTab,true, true, sc);
 		//dynamicEditor("TEST", matricesTab, sc);
 		
@@ -30,7 +35,7 @@ public class MainMatrix {
 			cmd = sc.next();
 			Scanner mainWhile_sc = new Scanner(cmd);
 			clearScreen();
-			if(sc.hasNext("EDIT") || sc.hasNext("edit")){
+			if(mainWhile_sc.hasNext("EDIT") || mainWhile_sc.hasNext("edit")){
 				System.out.print("Matrix Name ? >");
 				cmd = sc.next();
 				if(!dynamicEditor(cmd, matricesTab, sc, info)){
@@ -39,12 +44,20 @@ public class MainMatrix {
 			}else if(mainWhile_sc.hasNext("CALC") || mainWhile_sc.hasNext("calc")){
 				//doOperation();
 			}else if(mainWhile_sc.hasNext("CREATE") || mainWhile_sc.hasNext("create")){
-				System.out.print("Which size ? >");
-				System.out.print("'RANDOM', 'VECTORIAL' or 'CUSTOMISED' ? >");
+				System.out.print("Which size ? (x,y)>");
+				cmd = sc.next();
+				Scanner size_sc = new Scanner(cmd);
+				size_sc.useDelimiter(",");
+				a = size_sc.nextInt();
+				b = size_sc.nextInt();
+				System.out.print("Which name ?>");
+				name = sc.next();
+				updateTab(matricesTab, new Matrix(a, b, name));
+				System.out.print("How ? 'RANDOM', 'VECTORIAL' or 'CUSTOMISED' ? >");
 				cmd = sc.next();
 				Scanner createWhile_sc = new Scanner(cmd);
 				if(createWhile_sc.hasNext("RANDOM") || createWhile_sc.hasNext("random")){
-					
+					System.out.println("Your matrix "+name+" has been successfully generated !");
 				}else if(createWhile_sc.hasNext("VECTORIAL") || createWhile_sc.hasNext("vectorial")){
 					
 				}else if(createWhile_sc.hasNext("CUSTOMIZED") || createWhile_sc.hasNext("customized")){
@@ -132,13 +145,10 @@ public class MainMatrix {
 	
 	// Update function which enlarge matrices tab and add the last one
 	
-	public static void updateTab(Matrix[] tab, Matrix m) {
-		Matrix[] newTab = new Matrix[tab.length+1];
-		for(int i = 0; i < tab.length; i++) {
-			newTab[i] = tab[i];
-		}
-		newTab[tab.length] = m;
-		tab = newTab;
+	public static Matrix[] updateTab(Matrix[] matricesTab, Matrix m) {
+		Matrix[] tab = Arrays.copyOf(matricesTab, matricesTab.length+1);
+		tab[tab.length-1] = m;
+		return tab;
 	}
 	
 	// Dynamic Editor
@@ -169,6 +179,7 @@ public class MainMatrix {
 				dynEdit_sc.useDelimiter(",");
 				a = dynEdit_sc.nextInt();
 				if(a == 0) {
+					dynEdit_sc.close();
 					quit = true;
 					info = "To begin, you can create your first Matrix using the 'CREATE' command\nand by letting the program guide you through the creation process,\nthen you can use 'EDIT', 'CALC', 'CREATE' again, 'SHOW', 'SHOW_ALL' or 'QUIT'.";
 				}else{
