@@ -45,7 +45,9 @@ public class MainMatrix {
 			else if(mainWhile_sc.hasNext("SHOW") || mainWhile_sc.hasNext("show")){
 				System.out.print("Matrix Name ? >");
 				cmd = sc.next();
-				showMatrix(searchMatrix(cmd, matricesTab), matricesTab, false, true, sc);
+				if(!showMatrix(searchMatrix(cmd, matricesTab), matricesTab, false, true, sc)){
+					info = "Error while searching matrix";
+				}
 			}else if(mainWhile_sc.hasNext("QUIT") || mainWhile_sc.hasNext("quit")){
 				quit = true;
 			}else{
@@ -70,29 +72,34 @@ public class MainMatrix {
     
     // Show one identified matrix
     
-    public static void showMatrix(int id, Matrix[] matricesTab, boolean b, boolean one, Scanner sc) {
-        System.out.println("| Matrix name :"+matricesTab[id].name);
-        System.out.println();
-        System.out.print("    ");
-        if(b){
+    public static boolean showMatrix(int id, Matrix[] matricesTab, boolean b, boolean one, Scanner sc) {
+        if(id != -1) {
+			System.out.println("| Matrix name :"+matricesTab[id].name);
+			System.out.println();
+			System.out.print("    ");
+			if(b){
+				for(int i = 0; i < matricesTab[id].data.length; i++) {
+					System.out.print("  "+(i+1)+" ");
+				}
+			}
+			System.out.println();
 			for(int i = 0; i < matricesTab[id].data.length; i++) {
-				System.out.print("  "+(i+1)+" ");
+				if(b) {
+					System.out.print(" "+(i+1)+" ");
+				}
+				System.out.print("|");
+				for(int j = 0; j < matricesTab[id].data.length; j++) {
+					System.out.print(" "+matricesTab[id].data[i][j]+" ");
+				}
+				System.out.println("|");
 			}
-		}
-		System.out.println();
-        for(int i = 0; i < matricesTab[id].data.length; i++) {
-			if(b) {
-				System.out.print(" "+(i+1)+" ");
+			System.out.println();
+			if(one){
+				pause(sc);
 			}
-			System.out.print("|");
-            for(int j = 0; j < matricesTab[id].data.length; j++) {
-				System.out.print(" "+matricesTab[id].data[i][j]+" ");
-			}
-			System.out.println("|");
-		}
-		System.out.println();
-		if(one){
-			pause(sc);
+			return true;
+		}else {
+			return false;
 		}
     }
     
@@ -170,7 +177,7 @@ public class MainMatrix {
 	// Block program
 	
 	public static void pause(Scanner sc) {
-		System.out.println("Type anything to go back to menu");
+		System.out.println("Type 'quit' or 'QUIT' to go back to menu");
         sc.next();
 	}
 	
