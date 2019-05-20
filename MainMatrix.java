@@ -14,7 +14,7 @@ public class MainMatrix {
         
         Matrix m = new Matrix(3,3, "test");
         matricesTab[0] = m;
-		showMatrix(0, matricesTab,true, true, sc);
+		//showMatrix(0, matricesTab,true, true, sc);
 		//dynamicEditor("TEST", matricesTab, sc);
 		
 		// Starting UI
@@ -102,10 +102,7 @@ public class MainMatrix {
         int id = -1;
         int i = 0;
         while(id == -1 && i < matricesTab.length) {
-			System.out.println(i);
-			System.out.println(matricesTab[i].name);
-			System.out.println(name);
-			if(matricesTab[i].name != name){                      // A MODIFIER CAR CE N'EST PAS NORMAL !!!!!!!!!
+			if(matricesTab[i].name.equals(name)){
 				id = i;
 			}
             i++;
