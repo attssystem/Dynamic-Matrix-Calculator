@@ -6,6 +6,11 @@ We're trying to conceive a matrix calculator which is able to perform most of th
 
 ## UML Diagrams
 
+| MainMatrix     	 | Matrix    |
+| :-------------     | :----------: |
+|  Cell Contents	 | More Stuff	|
+| You Can Also  	 | Put Pipes In |
+
 ## Authors
 - Hugues KADI | ATTSSystem
 - Camille MARTIN | AstraleK
