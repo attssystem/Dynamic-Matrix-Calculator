@@ -8,8 +8,8 @@ public class MainMatrix {
 		Matrix[] matricesTab = new Matrix[0];
 		String cmd;
 		String info;
-		int a;
-		int b;
+		int a = -1;
+		int b = -1;
 		String name;
         
         Scanner sc = new Scanner(System.in);
@@ -43,8 +43,13 @@ public class MainMatrix {
 				cmd = sc.next();
 				Scanner size_sc = new Scanner(cmd);
 				size_sc.useDelimiter(",");
-				a = size_sc.nextInt();
-				b = size_sc.nextInt();
+				// Check the input syntax
+				if(size_sc.hasNextInt()) {
+					a = size_sc.nextInt();
+				}
+				if(size_sc.hasNextInt()) {
+					b = size_sc.nextInt();
+				}
 				System.out.print("Which name ?>");
 				name = sc.next();
 				System.out.print("How ? 'RANDOM', 'VECTORIAL' or 'CUSTOMISED' ? >");
@@ -159,9 +164,9 @@ public class MainMatrix {
 			String com = "Type x,y,new_value or 0 to leave";
 			boolean quit = false;
 			String input;
-			int a;
-			int b;
-			int c;
+			int a = -1;
+			int b = -1;
+			int c = -1;
 			while(!quit) {
 				clearScreen();
 				System.out.println("------------------");
@@ -171,23 +176,32 @@ public class MainMatrix {
 				showMatrix(id, matricesTab, true, false, sc);
 				System.out.print("DynEdit_CMD> ");
 				input = sc.next();
-				// Write text will stop program !
 				Scanner dynEdit_sc = new Scanner(input);
 				dynEdit_sc.useDelimiter(",");
-				a = dynEdit_sc.nextInt();
+				// Check the input syntax
+				if(dynEdit_sc.hasNextInt()) {
+					a = dynEdit_sc.nextInt();
+				}
+				if(dynEdit_sc.hasNextInt()) {
+					b = dynEdit_sc.nextInt();
+				}
+				if(dynEdit_sc.hasNextInt()) {
+					c = dynEdit_sc.nextInt();
+				}
+				// Compute inputs
 				if(a == 0) {
 					dynEdit_sc.close();
 					quit = true;
 					info = "To begin, you can create your first Matrix using the 'CREATE' command\nand by letting the program guide you through the creation process,\nthen you can use 'EDIT', 'CALC', 'CREATE' again, 'SHOW', 'SHOW_ALL' or 'QUIT'.";
+				}else if(a == -1 || b == -1 || c == -1){
+					com = "Wrong input, retry (type 0 to leave)";	
 				}else{
-					b = dynEdit_sc.nextInt();
-					c = dynEdit_sc.nextInt();
 					dynEdit_sc.close();
 					if(a <= matricesTab[id].data.length && 0 < a && b <= matricesTab[id].data[a].length && 0 < b) {
 						matricesTab[id].data[a-1][b-1] = c;
 						com = "Change done !";
 					}else {
-						com = "Wrong input, retry";
+						com = "Wrong input, retry (type 0 to leave)";
 					}
 				}
 			}
