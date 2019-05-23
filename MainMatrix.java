@@ -155,6 +155,8 @@ public class MainMatrix {
 	
 	// Update function which enlarge matrices tab and add the last one
 	
+ //Useless comment
+	
 	public static Matrix[] updateTab(Matrix[] matricesTab, Matrix m) {
 		Matrix[] tab = Arrays.copyOf(matricesTab, matricesTab.length+1);
 		tab[tab.length-1] = m;
