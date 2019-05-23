@@ -6,6 +6,7 @@ public class MainMatrix {
 	public static void main (String args[]) {
 		boolean quit = false;
 		Matrix[] matricesTab = new Matrix[0];
+		Matrix[] vectorsTab = new Matrix[1];
 		String cmd;
 		String info;
 		int a = -1;
@@ -60,7 +61,14 @@ public class MainMatrix {
 					showMatrix(searchMatrix(name, matricesTab), matricesTab, false, true, sc);
 				}else if(createWhile_sc.hasNext("VECTORIAL") || createWhile_sc.hasNext("vectorial")){
 					matricesTab = updateTab(matricesTab, new Matrix(a, b, name, false));
-					//Need to add vectors
+					//Using specifically sized matrix instead of vectors
+					for(int i = 0; i < b; i++){
+						vectorsTab[0] = new Matrix(a, 1, "Vector", false);
+						dynamicEditor("Vector", vectorsTab, sc, info);
+						for(int j = 0; j < a; j++){
+							matricesTab[searchMatrix(name, matricesTab)].data[j][i] = vectorsTab[0].data[j][0];
+						}
+					}
 				}else if(createWhile_sc.hasNext("CUSTOMISED") || createWhile_sc.hasNext("customised")){
 					matricesTab = updateTab(matricesTab, new Matrix(a, b, name, false));
 					dynamicEditor(name, matricesTab, sc, info);
@@ -106,7 +114,7 @@ public class MainMatrix {
 			System.out.println();
 			System.out.print("    ");
 			if(b){
-				for(int i = 0; i < matricesTab[id].data.length; i++) {
+				for(int i = 0; i < matricesTab[id].data[0].length; i++) {
 					System.out.print("  "+(i+1)+" ");
 				}
 			}
@@ -116,7 +124,7 @@ public class MainMatrix {
 					System.out.print(" "+(i+1)+" ");
 				}
 				System.out.print("|");
-				for(int j = 0; j < matricesTab[id].data.length; j++) {
+				for(int j = 0; j < matricesTab[id].data[0].length; j++) {
 					System.out.print(" "+matricesTab[id].data[i][j]+" ");
 				}
 				System.out.println("|");
