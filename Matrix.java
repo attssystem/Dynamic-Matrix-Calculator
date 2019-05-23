@@ -133,4 +133,72 @@ public class Matrix{
     	}
 	}
     
+    public Matrix gaussJourdan(Matrix m){
+		int r = -1; // Num from last "Pivot"
+		int k = 0; // Line of maximum
+		int max; // Max
+		int temp;
+		for(int j = 0; j<m.data.length; j++) {
+			//Looking for a maximum
+			max = m.data[0][j];
+			for(int h = r+2; h < m.data.length; h++) {
+				if(max < m.data[h][j]) {
+					k = h;
+					max = m.data[h][j];
+				}
+			}
+			
+			if(m.data[k][j] != 0) {
+				r++;
+				// Dividing k line by m.data[k][j]
+				for(int l = 0; l < m.data.length; l++) {
+					m.data[k][l] = m.data[k][l]/m.data[k][j];
+				}
+				// Switching k and r lines
+				for(int n = 0; n < m.data.length; n++) {
+					temp = m.data[k][n];
+					m.data[k][n] = m.data[r][n];
+					m.data[r][n] = temp;
+				}
+				
+				for(int o = 0; o < m.data.length; o ++) {
+					if(o != r) {
+						for(int p = 0; p < m.data.length; p++) {
+							m.data[o][p] -= m.data[r][p]*m.data[o][j];
+						}
+					}
+				}
+			}
+		}
+		return m;
+	}
+	
+	public Matrix reverse(){
+		// Test square parameters and if det != 0 !
+		Matrix m01I = new Matrix(this.data.length, (this.data.length*2), "m01I", false);
+		Matrix reversed = new Matrix(this.data.length, this.data.length, "reversed", false);
+		// Copy of initial Matrix on the left side
+		for(int i = 0; i < this.data.length; i++){
+			for(int j = 0; j < this.data.length; j++){
+				m01I.data[i][j] = this.data[i][j];
+			}
+		}
+		// Copy of Identity Matrix on the right side
+		for(int i = 0; i < this.data.length; i++){
+			for(int j = (this.data.length-1); j < (this.data.length*2); j++){
+				if(i == (j-this.data.length)){
+					m01I.data[i][j] = this.data[i][j];
+				}
+			}
+		}
+		// Calculations
+		m01I = gaussJourdan(m01I);
+		// Gathering only the reversed Matrix
+		for(int i = 0; i < this.data.length; i++){
+			for(int j = (this.data.length-1); j < (this.data.length*2); j++){
+				reversed.data[i][j] = m01I.data[i][j];
+			}
+		}
+		return reversed;
+	}
 }
