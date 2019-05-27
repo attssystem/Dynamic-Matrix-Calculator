@@ -1,10 +1,10 @@
 public class MainTest {
     public static void main(String[] args) {
 		 
-		 Matrix m01 = new Matrix(3,2,"truc",true);
+		 Matrix m01 = new Matrix(3,3,"truc",true);
 		 m01.afficheMatrice();
 		 
-		 Matrix m02 = new Matrix(
+		 Matrix m02 = m01.reverse();
 		 m02.afficheMatrice();
 		 
 		 Matrix m03 = m01.multiplyM(m02);

@@ -1,8 +1,8 @@
 public class Matrix{
-	int[][] data;
+	double[][] data;
     String name;
 	public Matrix (int l, int n, String na, boolean rand) { //Génération aléatoire avec nombre de ligne et de colonne données
-    	this.data = new int [l][n];
+    	this.data = new double [l][n];
         this.name = na;
         if(rand) {
             for (int i=0;i<this.data.length;i++){
@@ -13,7 +13,7 @@ public class Matrix{
         }
 	}
 
-	public Matrix gaussJourdan(Matrix m){
+	/* public Matrix gaussJourdan(Matrix m){
         int r = -1; // Num from last "Pivot"
         int k = 0; // Line of maximum
         int max; // Max
@@ -51,7 +51,62 @@ public class Matrix{
             }
         }
         return m;
-    }
+    } */
+    
+    public void gaussJourdan() {
+		int r = -1;
+		int k;
+		double max;
+		double temp;
+		double temp2;
+		double temp3;
+		
+		for(int j = 0; j < this.data[0].length; j++) {
+			// Look for a maximum
+			System.out.println((r+1)+" "+j);
+			max = Math.abs(this.data[r+1][j]);
+			k = r+1;
+			for(int i = r+2; i < this.data.length; i++) {
+				if(Math.abs(this.data[i][j]) > max) {
+					max = this.data[i][j];
+					k = i;
+				}
+			}
+			
+			if(this.data[k][j] != 0) {
+				r++;
+				// Divide k line
+				temp2 = this.data[k][j];
+				for(int i = 0; i < this.data[0].length; i++) {
+					this.data[k][i] = this.data[k][i]/temp2;
+				}
+				System.out.println("divide "+k);
+				System.out.println(temp2);
+				this.afficheMatrice();
+				
+				// Switching k and r lines
+				for(int i = 0; i < this.data[0].length; i++) {
+					temp = this.data[k][i];
+					this.data[k][i] = this.data[r][i];
+					this.data[r][i] = temp;
+				}
+				System.out.println("switch");
+				this.afficheMatrice();
+				
+				// Other lines simplified
+				for(int i = 0; i < this.data.length; i++) {
+					temp3 = this.data[i][j];
+					if(i != r) {
+						for(int h = 0; h < this.data[0].length; h++) {
+							this.data[i][h] = this.data[i][h]-(this.data[r][h]*temp3);
+						}
+					}
+				}
+				System.out.println("simplification");
+				this.afficheMatrice();
+			}
+		}
+	}
     
     public Matrix reverse(){
         // Test square parameters and if det != 0 !
@@ -67,16 +122,18 @@ public class Matrix{
         for(int i = 0; i < this.data.length; i++){
             for(int j = (this.data.length-1); j < (this.data.length*2); j++){
                 if(i == (j-this.data.length)){
-                    m01I.data[i][j] = this.data[i][j];
+                    m01I.data[i][j] = 1;
                 }
             }
         }
         // Calculations
-        m01I = gaussJourdan(m01I);
+        m01I.afficheMatrice();
+        m01I.gaussJourdan();
+        m01I.afficheMatrice();
         // Gathering only the reversed Matrix
         for(int i = 0; i < this.data.length; i++){
-            for(int j = (this.data.length-1); j < (this.data.length*2); j++){
-                reversed.data[i][j] = m01I.data[i][j];
+            for(int j = 0; j < this.data.length; j++){
+                reversed.data[i][j] = m01I.data[i][j+this.data.length];
             }
         }
         return reversed;
@@ -174,32 +231,32 @@ public class Matrix{
        	 
     
 	public double trace(){ // Ne fonctionne qu'avec matrices carrées !
-    	int[] diagonal = this.getDiagonal();
-    	int Trace = 0;
+    	double[] diagonal = this.getDiagonal();
+    	double Trace = 0;
     	for (int i=0; i<diagonal.length;i++){
         	Trace = Trace + diagonal[i];
     	}
 	return Trace;
 	}
     
-	public int[] getColumn(int whichColumn){ //Renvoie un tableau 1D contenant une colonne de la matrice que l'utilisateur selectionnera
-    	int[] Column = new int[this.data.length];
+	public double[] getColumn(int whichColumn){ //Renvoie un tableau 1D contenant une colonne de la matrice que l'utilisateur selectionnera
+    	double[] Column = new double[this.data.length];
     	for (int i=0;i<Column.length;i++){
         	Column[i]=this.data[i][whichColumn];
     	}
     	return Column;
 	}
     
-	public int[] getLine(int whichLine){ //Renvoie un tableau 1D contenant une ligne de la matrice que l'utilisateur selectionnera
-    	int[] line = new int[this.data[0].length];
+	public double[] getLine(int whichLine){ //Renvoie un tableau 1D contenant une ligne de la matrice que l'utilisateur selectionnera
+    	double[] line = new double[this.data[0].length];
     	for (int i=0;i<line.length;i++){
         	line[i]=this.data[whichLine][i];
     	}
     	return line;
 	}
     
-	public int[] getDiagonal() { //Renvoie un tableau 1D contenant la diagonale de la matrice
-    	int[] diagonal = new int[this.data.length]; // Ne fonctionne que si la matrice est carrée, penser à trouver un moyen de dire que l'opération n'est pas possible
+	public double[] getDiagonal() { //Renvoie un tableau 1D contenant la diagonale de la matrice
+    	double[] diagonal = new double[this.data.length]; // Ne fonctionne que si la matrice est carrée, penser à trouver un moyen de dire que l'opération n'est pas possible
     	for (int i=0;i<diagonal.length;i++){
         	diagonal[i]=this.data[i][i];
     	}
