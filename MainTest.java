@@ -1,7 +1,7 @@
 public class MainTest {
     public static void main(String[] args) {
 		 
-		 Matrix m01 = new Matrix(3,3,"truc",true);
+		 Matrix m01 = new Matrix(6,6,"truc",true);
 		 m01.afficheMatrice();
 		 
 		 Matrix m02 = m01.reverse();

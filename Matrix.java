@@ -62,48 +62,50 @@ public class Matrix{
 		double temp3;
 		
 		for(int j = 0; j < this.data[0].length; j++) {
-			// Look for a maximum
-			System.out.println((r+1)+" "+j);
-			max = Math.abs(this.data[r+1][j]);
-			k = r+1;
-			for(int i = r+2; i < this.data.length; i++) {
-				if(Math.abs(this.data[i][j]) > max) {
-					max = this.data[i][j];
-					k = i;
-				}
-			}
-			
-			if(this.data[k][j] != 0) {
-				r++;
-				// Divide k line
-				temp2 = this.data[k][j];
-				for(int i = 0; i < this.data[0].length; i++) {
-					this.data[k][i] = this.data[k][i]/temp2;
-				}
-				System.out.println("divide "+k);
-				System.out.println(temp2);
-				this.afficheMatrice();
-				
-				// Switching k and r lines
-				for(int i = 0; i < this.data[0].length; i++) {
-					temp = this.data[k][i];
-					this.data[k][i] = this.data[r][i];
-					this.data[r][i] = temp;
-				}
-				System.out.println("switch");
-				this.afficheMatrice();
-				
-				// Other lines simplified
-				for(int i = 0; i < this.data.length; i++) {
-					temp3 = this.data[i][j];
-					if(i != r) {
-						for(int h = 0; h < this.data[0].length; h++) {
-							this.data[i][h] = this.data[i][h]-(this.data[r][h]*temp3);
-						}
+			if((r+1) < this.data.length) {
+				// Look for a maximum
+				System.out.println((r+1)+" "+j);
+				max = Math.abs(this.data[r+1][j]);
+				k = r+1;
+				for(int i = r+2; i < this.data.length; i++) {
+					if(Math.abs(this.data[i][j]) > max) {
+						max = Math.abs(this.data[i][j]);
+						k = i;
 					}
 				}
-				System.out.println("simplification");
-				this.afficheMatrice();
+				
+				if(this.data[k][j] != 0) {
+					r++;
+					// Divide k line
+					temp2 = this.data[k][j];
+					for(int i = 0; i < this.data[0].length; i++) {
+						this.data[k][i] = this.data[k][i]/temp2;
+					}
+					System.out.println("divide "+k);
+					System.out.println(temp2);
+					this.afficheMatrice();
+					
+					// Switching k and r lines
+					for(int i = 0; i < this.data[0].length; i++) {
+						temp = this.data[k][i];
+						this.data[k][i] = this.data[r][i];
+						this.data[r][i] = temp;
+					}
+					System.out.println("switch");
+					this.afficheMatrice();
+					
+					// Other lines simplified
+					for(int i = 0; i < this.data.length; i++) {
+						temp3 = this.data[i][j];
+						if(i != r) {
+							for(int h = 0; h < this.data[0].length; h++) {
+								this.data[i][h] = this.data[i][h]-(this.data[r][h]*temp3);
+							}
+						}
+					}
+					System.out.println("simplification");
+					this.afficheMatrice();
+				}
 			}
 		}
 	}
