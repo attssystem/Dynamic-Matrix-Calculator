@@ -9,10 +9,10 @@ public class MainMatrix {
 		Matrix[] vectorsTab = new Matrix[1];
 		String cmd;
 		String info;
-		int a = -1;
-		int b = -1;
 		String name;
 		String name2;
+		int a = -1;
+		int b = -1;
 		int id1;
 		int id2;
         

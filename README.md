@@ -7,8 +7,19 @@ We're trying to conceive a matrix calculator which is able to perform most of th
 ## UML Diagrams
 
 | MainMatrix     	 | Matrix    |
-| :-------------     | :----------: |
-| :-------------     | :----------: |
+| :-------------     | :---------- |
+| + boolean quit | + double[][] data |
+| + Matrix[] matricesTab | + String name |
+| + Matrix[] vectorsTab | |
+| + String cmd | |
+| + String info | |
+| + String name | |
+| + String name2 | |
+| + int a | |
+| + int b | |
+| + int id1 | |
+| + int id2 | |
+| _______________________________________________ | _______________________________________________ |
 | + void showMatrices(Matrix[], Scanner) | + Matrix gaussJourdan()	|
 | + boolean showMatrix(int, Matrix[], boolean, boolean, Scanner)  	 | + Matrix reverse() |
 | + int searchMatrix(String, Matrix[]) | + Matrix multiplyM(Matrix) |
