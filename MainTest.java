@@ -1,13 +1,29 @@
 public class MainTest {
     public static void main(String[] args) {
 		 
-		 Matrix m01 = new Matrix(6,6,"truc",true);
+		 Matrix m01 = new Matrix(3,3,"truc",true);
+		 m01.data[0][0] = 1;
+		 m01.data[0][1] = 2;
+		 m01.data[0][2] = -3;
+		 m01.data[1][0] = 2;
+		 m01.data[1][1] = 6;
+		 m01.data[1][2] = -11;
+		 m01.data[2][0] = 1;
+		 m01.data[2][1] = -2;
+		 m01.data[2][2] = 7;
+		 
 		 m01.afficheMatrice();
 		 
-		 Matrix m02 = m01.reverse();
-		 m02.afficheMatrice();
+		 m01 = m01.gaussJourdan();
 		 
-		 Matrix m03 = m01.multiplyM(m02);
-		 m03.afficheMatrice();
+		 m01.afficheMatrice();
+		 
+		 
+		 
+		 //Matrix m02 = m01.reverse();
+		 //m02.afficheMatrice();
+		 
+		 //Matrix m03 = m01.multiplyM(m02);
+		 //m03.afficheMatrice();
 	}
 }

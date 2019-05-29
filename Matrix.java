@@ -12,48 +12,15 @@ public class Matrix{
 			}
         }
 	}
-
-	/* public Matrix gaussJourdan(Matrix m){
-        int r = -1; // Num from last "Pivot"
-        int k = 0; // Line of maximum
-        int max; // Max
-        int temp;
-        for(int j = 0; j<m.data.length; j++) {
-            //Looking for a maximum
-            max = m.data[0][j];
-            for(int h = r+2; h < m.data.length; h++) {
-                if(max < m.data[h][j]) {
-                    k = h;
-                    max = m.data[h][j];
-                }
-            }
-            
-            if(m.data[k][j] != 0) {
-                r++;
-                // Dividing k line by m.data[k][j]
-                for(int l = 0; l < m.data.length; l++) {
-                    m.data[k][l] = m.data[k][l]/m.data[k][j];
-                }
-                // Switching k and r lines
-                for(int n = 0; n < m.data.length; n++) {
-                    temp = m.data[k][n];
-                    m.data[k][n] = m.data[r][n];
-                    m.data[r][n] = temp;
-                }
-                
-                for(int o = 0; o < m.data.length; o ++) {
-                    if(o != r) {
-                        for(int p = 0; p < m.data.length; p++) {
-                            m.data[o][p] -= m.data[r][p]*m.data[o][j];
-                        }
-                    }
-                }
-            }
-        }
-        return m;
-    } */
     
-    public void gaussJourdan() {
+    public Matrix gaussJourdan() {
+		Matrix m01G = new Matrix(this.data.length, this.data[0].length, this.name+"_ech", false);
+		for (int i = 0; i < this.data.length; i++){
+			for (int j = 0; j < this.data.length; j++){
+				m01G.data[i][j] = this.data[i][j];
+			}
+		}
+		
 		int r = -1;
 		int k;
 		double max;
@@ -61,59 +28,61 @@ public class Matrix{
 		double temp2;
 		double temp3;
 		
-		for(int j = 0; j < this.data[0].length; j++) {
-			if((r+1) < this.data.length) {
+		for(int j = 0; j < m01G.data[0].length; j++) {
+			if((r+1) < m01G.data.length) {
 				// Look for a maximum
-				System.out.println((r+1)+" "+j);
-				max = Math.abs(this.data[r+1][j]);
+				// System.out.println((r+1)+" "+j);
+				max = Math.abs(m01G.data[r+1][j]);
 				k = r+1;
-				for(int i = r+2; i < this.data.length; i++) {
-					if(Math.abs(this.data[i][j]) > max) {
-						max = Math.abs(this.data[i][j]);
+				for(int i = r+2; i < m01G.data.length; i++) {
+					if(Math.abs(m01G.data[i][j]) > max) {
+						max = Math.abs(m01G.data[i][j]);
 						k = i;
 					}
 				}
 				
-				if(this.data[k][j] != 0) {
+				if(m01G.data[k][j] != 0) {
 					r++;
 					// Divide k line
-					temp2 = this.data[k][j];
-					for(int i = 0; i < this.data[0].length; i++) {
-						this.data[k][i] = this.data[k][i]/temp2;
+					temp2 = m01G.data[k][j];
+					for(int i = 0; i < m01G.data[0].length; i++) {
+						m01G.data[k][i] = m01G.data[k][i]/temp2;
 					}
-					System.out.println("divide "+k);
-					System.out.println(temp2);
-					this.afficheMatrice();
+					// System.out.println("divide "+k);
+					// System.out.println(temp2);
+					// m01G.afficheMatrice();
 					
 					// Switching k and r lines
-					for(int i = 0; i < this.data[0].length; i++) {
-						temp = this.data[k][i];
-						this.data[k][i] = this.data[r][i];
-						this.data[r][i] = temp;
+					for(int i = 0; i < m01G.data[0].length; i++) {
+						temp = m01G.data[k][i];
+						m01G.data[k][i] = m01G.data[r][i];
+						m01G.data[r][i] = temp;
 					}
-					System.out.println("switch");
-					this.afficheMatrice();
+					// System.out.println("switch");
+					// m01G.afficheMatrice();
 					
 					// Other lines simplified
-					for(int i = 0; i < this.data.length; i++) {
-						temp3 = this.data[i][j];
+					for(int i = 0; i < m01G.data.length; i++) {
+						temp3 = m01G.data[i][j];
 						if(i != r) {
-							for(int h = 0; h < this.data[0].length; h++) {
-								this.data[i][h] = this.data[i][h]-(this.data[r][h]*temp3);
+							for(int h = 0; h < m01G.data[0].length; h++) {
+								m01G.data[i][h] = m01G.data[i][h]-(m01G.data[r][h]*temp3);
 							}
 						}
 					}
-					System.out.println("simplification");
-					this.afficheMatrice();
+					// System.out.println("simplification");
+					// m01G.afficheMatrice();
 				}
 			}
 		}
+		// m01G.afficheMatrice();
+		return m01G;
 	}
     
     public Matrix reverse(){
         // Test square parameters and if det != 0 !
         Matrix m01I = new Matrix(this.data.length, (this.data.length*2), "m01I", false);
-        Matrix reversed = new Matrix(this.data.length, this.data.length, "reversed", false);
+        Matrix reversed = new Matrix(this.data.length, this.data.length, this.name+"_rev", false);
         // Copy of initial Matrix on the left side
         for(int i = 0; i < this.data.length; i++){
             for(int j = 0; j < this.data.length; j++){
@@ -130,7 +99,7 @@ public class Matrix{
         }
         // Calculations
         m01I.afficheMatrice();
-        m01I.gaussJourdan();
+        m01I = m01I.gaussJourdan();
         m01I.afficheMatrice();
         // Gathering only the reversed Matrix
         for(int i = 0; i < this.data.length; i++){
@@ -138,6 +107,7 @@ public class Matrix{
                 reversed.data[i][j] = m01I.data[i][j+this.data.length];
             }
         }
+        reversed.afficheMatrice();
         return reversed;
     }
 
@@ -222,7 +192,7 @@ public class Matrix{
     
     
 	public Matrix transpose(){
-    	Matrix m01T = new Matrix(this.data[0].length,this.data.length, "m01T", false);
+    	Matrix m01T = new Matrix(this.data[0].length,this.data.length, this.name+"_trans", false);
     	for (int i=0;i<this.data.length;i++){
         	for (int j=0;j<this.data[0].length;j++){
             	m01T.data[j][i]=this.data[i][j];
