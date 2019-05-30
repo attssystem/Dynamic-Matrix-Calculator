@@ -68,9 +68,6 @@ public class MainMatrix {
 							}else{
 								info = "The matrix isn't squared";
 							}
-						}else if(mainWhile_sc.hasNext("ECH")){
-							matricesTab = saveTemp(matricesTab[id1].gaussJourdan(), matricesTab);
-							showMatrix(matricesTab.length-1, matricesTab, true, true, sc);
 						}else if(mainWhile_sc.hasNext("TRANS")){
 							matricesTab = saveTemp(matricesTab[id1].transpose(), matricesTab);
 							showMatrix(matricesTab.length-1, matricesTab, true, true, sc);
@@ -146,7 +143,7 @@ public class MainMatrix {
 					info = "Error while searching matrix";
 				}
 			}else if(mainWhile_sc.hasNext("HELP") || mainWhile_sc.hasNext("help")){
-				System.out.println("_'CREATE' allows you to create a new matrix, you'll be guided through the whole process\n__'RANDOM' create a matrix composed of N-values from -99 to 99\n__'VECTORIAL' allows you to create the column vectors of your matrix\n__'CUSTOMISED' allows you to edit your empty matric\n_'EDIT' allows you to edit a matrix, you'll be asked the matrix's name (case sensitive)\n_'SHOW_ALL' displays all the matrixes\n_'SHOW' displays one matrix, you'll be asked the matrix's name (case sensitive)\n_'CALC' allows you to compute matrices and waits parameters separated by '-' like 'CALC-matrix-DET'\n__'matrix1 name' take the first matrix to comupte\n___'DET' returns the determinant of matrix1\n___'VAL' returns the eigenvalues of matrix1\n___'VEC' returns the eigenvectors of matrix1\n___'REV' saves and displays the reversed matrix of matrix1\n___'ECH' saves and displays the ranked matrix of matrix1\n___'TRANS' saves and displays the transposed matrix of matrix1\n_'QUIT' stops the programm\n\nIMPORTANT NOTES :\n_If you edit a matrix, all its computed versions (like transposed or reversed) will be deleted\n\n");
+				System.out.println("_'CREATE' allows you to create a new matrix, you'll be guided through the whole process\n__'RANDOM' create a matrix composed of N-values from -99 to 99\n__'VECTORIAL' allows you to create the column vectors of your matrix\n__'CUSTOMISED' allows you to edit your empty matric\n_'EDIT' allows you to edit a matrix, you'll be asked the matrix's name (case sensitive)\n_'SHOW_ALL' displays all the matrixes\n_'SHOW' displays one matrix, you'll be asked the matrix's name (case sensitive)\n_'CALC' allows you to compute matrices and waits parameters separated by '-' like 'CALC-matrix-DET'\n__'matrix1 name' take the first matrix to comupte\n___'DET' returns the determinant of matrix1\n___'VAL' returns the eigenvalues of matrix1\n___'VEC' returns the eigenvectors of matrix1\n___'REV' saves and displays the reversed matrix of matrix1\n___'TRANS' saves and displays the transposed matrix of matrix1\n_'QUIT' stops the programm\n\nIMPORTANT NOTES :\n_If you edit a matrix, all its computed versions (like transposed or reversed) will be deleted\n\n");
 				pause(sc);
 			}else if(mainWhile_sc.hasNext("QUIT") || mainWhile_sc.hasNext("quit")){
 				quit = true;
