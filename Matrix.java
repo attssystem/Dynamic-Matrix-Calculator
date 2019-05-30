@@ -233,6 +233,7 @@ public class Matrix{
 	}
     
 	public double[] getDiagonal() { //Renvoie un tableau 1D contenant la diagonale de la matrice
+
     	if(!this.testCarree()){ // Si la matrice n'est pas carrée, retourne le pointeur nul.
 			return null;
 		}else{
@@ -244,7 +245,7 @@ public class Matrix{
 			return diagonal;
 		}
 	}
-   	 
+
     
     
 	public boolean testCarree() { // teste si la matrice est carrée : renvoie "true" si elle est carrée, false sinon. Penser à intégrer ça dans les fonctions.

@@ -9,9 +9,12 @@ public class MainMatrix {
 		Matrix[] vectorsTab = new Matrix[1];
 		String cmd;
 		String info;
+		String name;
+		String name2;
 		int a = -1;
 		int b = -1;
-		String name;
+		int id1;
+		int id2;
         
         Scanner sc = new Scanner(System.in);
         
@@ -22,7 +25,7 @@ public class MainMatrix {
 		// Starting UI
 		
 		clearScreen();
-		info = "To begin, you can create your first Matrix using the 'CREATE' command\nand by letting the program guide you through the creation process,\nthen you can use 'EDIT', 'CALC', 'CREATE', 'SHOW', 'SHOW_ALL' again or 'QUIT'.";
+		info = "To begin, you can create your first Matrix using the 'CREATE' command\nand by letting the program guide you through the creation process,\nthen you can use 'EDIT', 'CALC', 'CREATE', 'SHOW', 'SHOW_ALL' again, 'HELP' or 'QUIT'.";
 		System.out.println();
         
         while(!quit) {
@@ -30,6 +33,7 @@ public class MainMatrix {
 			System.out.print("CMD>");
 			cmd = sc.next();
 			Scanner mainWhile_sc = new Scanner(cmd);
+			mainWhile_sc.useDelimiter("-");
 			clearScreen();
 			if(mainWhile_sc.hasNext("EDIT") || mainWhile_sc.hasNext("edit")){
 				System.out.print("Matrix Name ? >");
@@ -39,6 +43,56 @@ public class MainMatrix {
 				}
 			}else if(mainWhile_sc.hasNext("CALC") || mainWhile_sc.hasNext("calc")){
 				//doOperation();
+				
+				if(mainWhile_sc.hasNext()){
+					mainWhile_sc.next();
+					name = mainWhile_sc.next();
+					id1 = searchMatrix(name, matricesTab);
+					if(id1 != -1){
+						if(mainWhile_sc.hasNext("DET")){
+							if(matricesTab[id1].testCarree()){
+								clearScreen();
+								System.out.println(name+"'s det = "+matricesTab[id1].determinant());
+								pause(sc);
+							}else{
+								info = "The matrix isn't squared";
+							}
+						}else if(mainWhile_sc.hasNext("VAL")){
+							// Can't compute eigenval for now
+						}else if(mainWhile_sc.hasNext("VEC")){
+							// Can't compute eigenvec for now
+						}else if(mainWhile_sc.hasNext("REV")){
+							if(matricesTab[id1].testCarree() && matricesTab[id1].determinant() != 0){
+								matricesTab = saveTemp(matricesTab[id1].reverse(), matricesTab);
+								showMatrix(matricesTab.length-1, matricesTab, true, true, sc);
+							}else{
+								info = "The matrix isn't squared";
+							}
+						}else if(mainWhile_sc.hasNext("ECH")){
+							matricesTab = saveTemp(matricesTab[id1].gaussJourdan(), matricesTab);
+							showMatrix(matricesTab.length-1, matricesTab, true, true, sc);
+						}else if(mainWhile_sc.hasNext("TRANS")){
+							matricesTab = saveTemp(matricesTab[id1].transpose(), matricesTab);
+							showMatrix(matricesTab.length-1, matricesTab, true, true, sc);
+						}else if(mainWhile_sc.hasNext("DIAG")){
+							
+						}else if(mainWhile_sc.hasNext("MULS")){
+							
+						}else if(mainWhile_sc.hasNext("MULM")){
+							
+						}else if(mainWhile_sc.hasNext("COL")){
+							
+						}else if(mainWhile_sc.hasNext("LINE")){
+							
+						}else{
+							info = "CALC function waits for a valid command to process";
+						}
+					}else{
+						info = "Matrix "+name+" doesn't exist";
+					}
+				}else{
+					info = "CALC function waits for a command to process";
+				}
 			}else if(mainWhile_sc.hasNext("CREATE") || mainWhile_sc.hasNext("create")){
 				System.out.print("Which size ? (x,y)>");
 				cmd = sc.next();
@@ -51,8 +105,15 @@ public class MainMatrix {
 				if(size_sc.hasNextInt()) {
 					b = size_sc.nextInt();
 				}
-				System.out.print("Which name ?>");
-				name = sc.next();
+				name = "deleted";
+				while(name.equals("deleted")){				// Check for an already existing matrix
+					System.out.print("Which name ?>");
+					name = sc.next();
+					if(searchMatrix(name, matricesTab) != -1){
+						name="deleted";
+						System.out.println("Matrix already exist, choose another name");
+					}
+				}
 				System.out.print("How ? 'RANDOM', 'VECTORIAL' or 'CUSTOMISED' ? >");
 				cmd = sc.next();
 				Scanner createWhile_sc = new Scanner(cmd);
@@ -84,10 +145,13 @@ public class MainMatrix {
 				if(!showMatrix(searchMatrix(cmd, matricesTab), matricesTab, false, true, sc)){
 					info = "Error while searching matrix";
 				}
+			}else if(mainWhile_sc.hasNext("HELP") || mainWhile_sc.hasNext("help")){
+				System.out.println("_'CREATE' allows you to create a new matrix, you'll be guided through the whole process\n__'RANDOM' create a matrix composed of N-values from -99 to 99\n__'VECTORIAL' allows you to create the column vectors of your matrix\n__'CUSTOMISED' allows you to edit your empty matric\n_'EDIT' allows you to edit a matrix, you'll be asked the matrix's name (case sensitive)\n_'SHOW_ALL' displays all the matrixes\n_'SHOW' displays one matrix, you'll be asked the matrix's name (case sensitive)\n_'CALC' allows you to compute matrices and waits parameters separated by '-' like 'CALC-matrix-DET'\n__'matrix1 name' take the first matrix to comupte\n___'DET' returns the determinant of matrix1\n___'VAL' returns the eigenvalues of matrix1\n___'VEC' returns the eigenvectors of matrix1\n___'REV' saves and displays the reversed matrix of matrix1\n___'ECH' saves and displays the ranked matrix of matrix1\n___'TRANS' saves and displays the transposed matrix of matrix1\n_'QUIT' stops the programm\n\nIMPORTANT NOTES :\n_If you edit a matrix, all its computed versions (like transposed or reversed) will be deleted\n\n");
+				pause(sc);
 			}else if(mainWhile_sc.hasNext("QUIT") || mainWhile_sc.hasNext("quit")){
 				quit = true;
 			}else{
-				info = "Unknown command, try 'CREATE', 'EDIT', 'CALC', 'SHOW', 'SHOW_ALL' or 'QUIT'";
+				info = "Unknown command, try 'CREATE', 'EDIT', 'CALC', 'SHOW', 'SHOW_ALL', 'HELP' or 'QUIT'";
 			}
             clearScreen();
         }
@@ -100,27 +164,29 @@ public class MainMatrix {
 	
     public static void showMatrices(Matrix[] matricesTab, Scanner sc) {
         for(int i = 0; i < matricesTab.length; i++) {
-            showMatrix(i, matricesTab, false, false, sc);
-            System.out.println();
+			if(!matricesTab[i].name.equals("deleted")) {
+				showMatrix(i, matricesTab, false, false, sc);
+				System.out.println();
+			}
         }
         pause(sc);
     }
     
     // Show one identified matrix
     
-    public static boolean showMatrix(int id, Matrix[] matricesTab, boolean b, boolean one, Scanner sc) {
+    public static boolean showMatrix(int id, Matrix[] matricesTab, boolean num, boolean pause, Scanner sc) {
         if(id != -1) {
 			System.out.println("| Matrix name :"+matricesTab[id].name);
 			System.out.println();
 			System.out.print("    ");
-			if(b){
+			if(num){
 				for(int i = 0; i < matricesTab[id].data[0].length; i++) {
 					System.out.print("  "+(i+1)+" ");
 				}
 			}
 			System.out.println();
 			for(int i = 0; i < matricesTab[id].data.length; i++) {
-				if(b) {
+				if(num) {
 					System.out.print(" "+(i+1)+" ");
 				}
 				System.out.print("|");
@@ -130,7 +196,7 @@ public class MainMatrix {
 				System.out.println("|");
 			}
 			System.out.println();
-			if(one){
+			if(pause){
 				pause(sc);
 			}
 			return true;
@@ -151,14 +217,6 @@ public class MainMatrix {
             i++;
         }
         return id;
-	}
-	
-	// Update function which enlarge matrices tab and add the last one
-	
-	public static Matrix[] updateTab(Matrix[] matricesTab, Matrix m) {
-		Matrix[] tab = Arrays.copyOf(matricesTab, matricesTab.length+1);
-		tab[tab.length-1] = m;
-		return tab;
 	}
 	
 	// Dynamic Editor
@@ -213,8 +271,41 @@ public class MainMatrix {
 					}
 				}
 			}
+			// Delete computed matrixes from the edited one
+			id = searchMatrix(name+"_ech", matricesTab);
+			if(id != -1) {
+				matricesTab[id].name = "deleted";
+			}
+			id = searchMatrix(name+"_trans", matricesTab);
+			if(id != -1) {
+				matricesTab[id].name = "deleted";
+			}
+			id = searchMatrix(name+"_rev", matricesTab);
+			if(id != -1) {
+				matricesTab[id].name = "deleted";
+			}
 			return true;
 		}
+	}
+	
+	// Save calculated temp matrices as a user matrix
+	
+	public static Matrix[] saveTemp(Matrix m, Matrix[] matricesTab){
+		Matrix[] container = {new Matrix(m.data.length, m.data[0].length, m.name, false)};
+		for (int i = 0; i < m.data.length; i++){
+			for (int j = 0; j < m.data[0].length; j++){
+				container[0].data[i][j] = m.data[i][j];
+			}
+		}
+		return updateTab(matricesTab, container[0]);
+	}
+	
+	// Update function which enlarge matrices tab and add the last one
+	
+	public static Matrix[] updateTab(Matrix[] matricesTab, Matrix m) {
+		Matrix[] tab = Arrays.copyOf(matricesTab, matricesTab.length+1);
+		tab[tab.length-1] = m;
+		return tab;
 	}
 	
 	// Block program
