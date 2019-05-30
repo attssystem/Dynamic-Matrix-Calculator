@@ -113,6 +113,35 @@ public class Matrix{
     }
 
 
+	public Matrix subtract(Matrix m02){
+		if(this.data.length==m02.data.length && this.data[0].length==m02.data[0].length){
+			Matrix mResult = new Matrix(this.data.length,this.data[0].length, "_adding", false);
+			for (int i=0;i<this.data.length;i++){
+				for (int j=0;j<this.data[0].length;j++){
+					mResult.data[i][j]=this.data[i][j]-m02.data[i][j];
+				}
+			}
+			return mResult;
+		}else{
+			return null;
+		}
+	}
+	
+	
+	public Matrix add(Matrix m02){
+		if(this.data.length==m02.data.length && this.data[0].length==m02.data[0].length){
+			Matrix mResult = new Matrix(this.data.length,this.data[0].length, "_adding", false);
+			for (int i=0;i<this.data.length;i++){
+				for (int j=0;j<this.data[0].length;j++){
+					mResult.data[i][j]=this.data[i][j]+m02.data[i][j];
+				}
+			}
+			return mResult;
+		}else{
+			return null;
+		}
+	}
+
 	public Matrix multiplyM (Matrix m02){ 
 		if(this.data[0].length!=m02.data.length){ //Si le nombres de colonnes de la matrice n'est pas égale aux nombres de lignes de m02, retourne le pointeur nul
 			return null;
