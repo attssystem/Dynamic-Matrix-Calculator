@@ -37,7 +37,7 @@ We're trying to conceive a matrix calculator which is able to perform most of th
 
 ## Authors
 - Hugues KADI | ATTSSystem
-	_UI, cmd interpreter and some matrix functions
+	--UI, cmd interpreter and some matrix functions
 - Camille MARTIN | AstraleK
-	_Matrix object, most of matric functions
+	--Matrix object, most of matric functions
 - Gautier ESCRIVA
