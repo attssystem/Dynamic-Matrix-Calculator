@@ -25,7 +25,7 @@ public class MainMatrix {
 		// Starting UI
 		
 		clearScreen();
-		info = "To begin, you can create your first Matrix using the 'CREATE' command\nand by letting the program guide you through the creation process,\nthen you can use 'EDIT', 'CALC', 'CREATE', 'SHOW', 'SHOW_ALL' again or 'QUIT'.";
+		info = "To begin, you can create your first Matrix using the 'CREATE' command\nand by letting the program guide you through the creation process,\nthen you can use 'EDIT', 'CALC', 'CREATE', 'SHOW', 'SHOW_ALL' again, 'HELP' or 'QUIT'.";
 		System.out.println();
         
         while(!quit) {
@@ -105,8 +105,15 @@ public class MainMatrix {
 				if(size_sc.hasNextInt()) {
 					b = size_sc.nextInt();
 				}
-				System.out.print("Which name ?>");
-				name = sc.next();
+				name = "deleted";
+				while(name.equals("deleted")){				// Check for an already existing matrix
+					System.out.print("Which name ?>");
+					name = sc.next();
+					if(searchMatrix(name, matricesTab) != -1){
+						name="deleted";
+						System.out.println("Matrix already exist, choose another name");
+					}
+				}
 				System.out.print("How ? 'RANDOM', 'VECTORIAL' or 'CUSTOMISED' ? >");
 				cmd = sc.next();
 				Scanner createWhile_sc = new Scanner(cmd);
@@ -138,10 +145,13 @@ public class MainMatrix {
 				if(!showMatrix(searchMatrix(cmd, matricesTab), matricesTab, false, true, sc)){
 					info = "Error while searching matrix";
 				}
+			}else if(mainWhile_sc.hasNext("HELP") || mainWhile_sc.hasNext("help")){
+				System.out.println("_'CREATE' allows you to create a new matrix, you'll be guided through the whole process\n__'RANDOM' create a matrix composed of N-values from -99 to 99\n__'VECTORIAL' allows you to create the column vectors of your matrix\n__'CUSTOMISED' allows you to edit your empty matric\n_'EDIT' allows you to edit a matrix, you'll be asked the matrix's name (case sensitive)\n_'SHOW_ALL' displays all the matrixes\n_'SHOW' displays one matrix, you'll be asked the matrix's name (case sensitive)\n_'CALC' allows you to compute matrices and waits parameters separated by '-' like 'CALC-matrix-DET'\n__'matrix1 name' take the first matrix to comupte\n___'DET' returns the determinant of matrix1\n___'VAL' returns the eigenvalues of matrix1\n___'VEC' returns the eigenvectors of matrix1\n___'REV' saves and displays the reversed matrix of matrix1\n___'ECH' saves and displays the ranked matrix of matrix1\n___'TRANS' saves and displays the transposed matrix of matrix1\n_'QUIT' stops the programm\n\nIMPORTANT NOTES :\n_If you edit a matrix, all its computed versions (like transposed or reversed) will be deleted\n\n");
+				pause(sc);
 			}else if(mainWhile_sc.hasNext("QUIT") || mainWhile_sc.hasNext("quit")){
 				quit = true;
 			}else{
-				info = "Unknown command, try 'CREATE', 'EDIT', 'CALC', 'SHOW', 'SHOW_ALL' or 'QUIT'";
+				info = "Unknown command, try 'CREATE', 'EDIT', 'CALC', 'SHOW', 'SHOW_ALL', 'HELP' or 'QUIT'";
 			}
             clearScreen();
         }
@@ -154,8 +164,10 @@ public class MainMatrix {
 	
     public static void showMatrices(Matrix[] matricesTab, Scanner sc) {
         for(int i = 0; i < matricesTab.length; i++) {
-            showMatrix(i, matricesTab, false, false, sc);
-            System.out.println();
+			if(!matricesTab[i].name.equals("deleted")) {
+				showMatrix(i, matricesTab, false, false, sc);
+				System.out.println();
+			}
         }
         pause(sc);
     }
@@ -258,6 +270,19 @@ public class MainMatrix {
 						com = "Wrong input, retry (type 0 to leave)";
 					}
 				}
+			}
+			// Delete computed matrixes from the edited one
+			id = searchMatrix(name+"_ech", matricesTab);
+			if(id != -1) {
+				matricesTab[id].name = "deleted";
+			}
+			id = searchMatrix(name+"_trans", matricesTab);
+			if(id != -1) {
+				matricesTab[id].name = "deleted";
+			}
+			id = searchMatrix(name+"_rev", matricesTab);
+			if(id != -1) {
+				matricesTab[id].name = "deleted";
 			}
 			return true;
 		}

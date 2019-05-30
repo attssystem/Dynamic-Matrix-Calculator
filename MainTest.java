@@ -2,19 +2,19 @@ public class MainTest {
     public static void main(String[] args) {
 		 
 		 Matrix m01 = new Matrix(3,3,"truc",true);
-		 m01.data[0][0] = 1;
-		 m01.data[0][1] = 2;
-		 m01.data[0][2] = -3;
-		 m01.data[1][0] = 2;
-		 m01.data[1][1] = 6;
-		 m01.data[1][2] = -11;
-		 m01.data[2][0] = 1;
-		 m01.data[2][1] = -2;
-		 m01.data[2][2] = 7;
+		 m01.data[0][0] = 2;
+		 m01.data[0][1] = -1;
+		 m01.data[0][2] = 0;
+		 m01.data[1][0] = -1;
+		 m01.data[1][1] = 2;
+		 m01.data[1][2] = -1;
+		 m01.data[2][0] = 0;
+		 m01.data[2][1] = -1;
+		 m01.data[2][2] = 2;
 		 
 		 m01.afficheMatrice();
 		 
-		 m01 = m01.gaussJourdan();
+		 m01 = m01.reverse();
 		 
 		 m01.afficheMatrice();
 		 
