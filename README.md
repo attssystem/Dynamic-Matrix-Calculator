@@ -36,8 +36,8 @@ We're trying to conceive a matrix calculator which is able to perform most of th
 |					| + boolean testCarree() |
 
 ## Authors
-- Hugues KADI | ATTSSystem
+- Hugues KADI | ATTSSystem\
 UI, cmd interpreter and some matrix functions
-- Camille MARTIN | AstraleK
+- Camille MARTIN | AstraleK\
 Matrix object, most of matric functions
 - Gautier ESCRIVA
