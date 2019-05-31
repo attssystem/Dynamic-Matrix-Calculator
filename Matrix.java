@@ -17,7 +17,7 @@ public class Matrix{
     public Matrix gaussJourdan() {
 		Matrix m01G = new Matrix(this.data.length, this.data[0].length, this.name+"_ech", false);
 		for (int i = 0; i < this.data.length; i++){
-			for (int j = 0; j < this.data.length; j++){
+			for (int j = 0; j < this.data[0].length; j++){
 				m01G.data[i][j] = this.data[i][j];
 			}
 		}
@@ -33,11 +33,11 @@ public class Matrix{
 			if((r+1) < m01G.data.length) {
 				// Look for a maximum
 				// System.out.println((r+1)+" "+j);
-				max = Math.abs(m01G.data[r+1][j]);
+				max = m01G.data[r+1][j];
 				k = r+1;
 				for(int i = r+2; i < m01G.data.length; i++) {
-					if(Math.abs(m01G.data[i][j]) > max) {
-						max = Math.abs(m01G.data[i][j]);
+					if(m01G.data[i][j] > max) {
+						max = m01G.data[i][j];
 						k = i;
 					}
 				}
@@ -115,7 +115,7 @@ public class Matrix{
 
 	public Matrix subtract(Matrix m02){
 		if(this.data.length==m02.data.length && this.data[0].length==m02.data[0].length){
-			Matrix mResult = new Matrix(this.data.length,this.data[0].length, "_adding", false);
+			Matrix mResult = new Matrix(this.data.length,this.data[0].length, this.name+"_sub_"+m02.name, false);
 			for (int i=0;i<this.data.length;i++){
 				for (int j=0;j<this.data[0].length;j++){
 					mResult.data[i][j]=this.data[i][j]-m02.data[i][j];
@@ -130,7 +130,7 @@ public class Matrix{
 	
 	public Matrix add(Matrix m02){
 		if(this.data.length==m02.data.length && this.data[0].length==m02.data[0].length){
-			Matrix mResult = new Matrix(this.data.length,this.data[0].length, "_adding", false);
+			Matrix mResult = new Matrix(this.data.length,this.data[0].length, this.name+"_add_"+m02.name, false);
 			for (int i=0;i<this.data.length;i++){
 				for (int j=0;j<this.data[0].length;j++){
 					mResult.data[i][j]=this.data[i][j]+m02.data[i][j];
@@ -146,7 +146,7 @@ public class Matrix{
 		if(this.data[0].length!=m02.data.length){ //Si le nombres de colonnes de la matrice n'est pas égale aux nombres de lignes de m02, retourne le pointeur nul
 			return null;
 		}else{
-			Matrix mResult = new Matrix(this.data.length,m02.data[0].length, "mResult", false);
+			Matrix mResult = new Matrix(this.data.length,m02.data[0].length, this.name+"_mulm_"+m02.name, false);
 			for (int i=0;i<mResult.data.length;i++){
 				for (int j=0;j<mResult.data[0].length;j++){
 					for (int n=0;n<this.data[0].length;n++){
@@ -162,7 +162,7 @@ public class Matrix{
 		
 
 	public Matrix multiplyS (int scalaire){
-		Matrix mResult = new Matrix(this.data.length, this.data[0].length, "mResult", false);
+		Matrix mResult = new Matrix(this.data.length, this.data[0].length, this.name+"_muls_"+scalaire, false);
 		for (int i=0;i<this.data.length;i++){
 			for (int j=0;j<this.data[0].length;j++){
 				mResult.data[i][j]=scalaire*this.data[i][j];

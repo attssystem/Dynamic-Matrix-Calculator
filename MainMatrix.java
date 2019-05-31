@@ -57,6 +57,36 @@ public class MainMatrix {
 							}else{
 								info = "The matrix isn't squared";
 							}
+						}else if(mainWhile_sc.hasNext("COL")){
+							mainWhile_sc.next();
+							if(mainWhile_sc.hasNextInt()){
+								id2 = mainWhile_sc.nextInt();
+								if(id2 > 0 && id2 <= matricesTab[id1].data[0].length){
+									showResult(matricesTab[id1].getColumn(id2-1), sc);
+								}else{
+									info = "CALC-matrix1-COL waits as last parameter the column you're looking for [1;n]";
+								}
+							}else{
+								info = "CALC-matrix1-COL waits as last parameter the column you're looking for [1;n]";
+							}
+						}else if(mainWhile_sc.hasNext("LINE")){
+							mainWhile_sc.next();
+							if(mainWhile_sc.hasNextInt()){
+								id2 = mainWhile_sc.nextInt();
+								if(id2 > 0 && id2 <= matricesTab[id1].data.length){
+									showResult(matricesTab[id1].getLine(id2-1), sc);
+								}else{
+									info = "CALC-matrix1-LINE waits as last parameter the line you're looking for [1;m]";
+								}
+							}else{
+								info = "CALC-matrix1-LINE waits as last parameter the line you're looking for [1;m]";
+							}
+						}else if(mainWhile_sc.hasNext("DIAG")){
+							if(matricesTab[id1].getDiagonal() == null){
+								info = "The matrix isn't squared";
+							}else{
+								showResult(matricesTab[id1].getDiagonal(), sc);
+							}
 						}else if(mainWhile_sc.hasNext("VAL")){
 							// Can't compute eigenval for now
 						}else if(mainWhile_sc.hasNext("VEC")){
@@ -71,16 +101,69 @@ public class MainMatrix {
 						}else if(mainWhile_sc.hasNext("TRANS")){
 							matricesTab = saveTemp(matricesTab[id1].transpose(), matricesTab);
 							showMatrix(matricesTab.length-1, matricesTab, true, true, sc);
-						}else if(mainWhile_sc.hasNext("DIAG")){
-							
 						}else if(mainWhile_sc.hasNext("MULS")){
-							
+							mainWhile_sc.next();
+							if(mainWhile_sc.hasNextInt()){
+								id2 = mainWhile_sc.nextInt();
+								matricesTab = saveTemp(matricesTab[id1].multiplyS(id2), matricesTab);
+								showMatrix(matricesTab.length-1, matricesTab, true, true, sc);
+							}else{
+								info = "CALC-matrix1-MULS waits as last parameter the scalar you want to multiply with";
+							}
 						}else if(mainWhile_sc.hasNext("MULM")){
-							
-						}else if(mainWhile_sc.hasNext("COL")){
-							
-						}else if(mainWhile_sc.hasNext("LINE")){
-							
+							mainWhile_sc.next();
+							if(mainWhile_sc.hasNext()){
+								name2 = mainWhile_sc.next();
+								id2 = searchMatrix(name2, matricesTab);
+								if(id2 != -1){
+									if(matricesTab[id1].multiplyM(matricesTab[id2]) != null){
+										matricesTab = saveTemp(matricesTab[id1].multiplyM(matricesTab[id2]), matricesTab);
+										showMatrix(matricesTab.length-1, matricesTab, true, true, sc);
+									}else{
+										info = "This function only works if matrix1_n = matrix2_m";
+									}
+								}else{
+									info = "CALC-matrix1-MULM waits as last parameter the matrix2's name you want to multiply with";
+								}
+							}else{
+								info = "CALC-matrix1-MULM waits as last parameter the matrix2's name you want to multiply with";
+							}
+						}else if(mainWhile_sc.hasNext("ADD")){
+							mainWhile_sc.next();
+							if(mainWhile_sc.hasNext()){
+								name2 = mainWhile_sc.next();
+								id2 = searchMatrix(name2, matricesTab);
+								if(id2 != -1){
+									if(matricesTab[id1].add(matricesTab[id2]) != null){
+										matricesTab = saveTemp(matricesTab[id1].add(matricesTab[id2]), matricesTab);
+										showMatrix(matricesTab.length-1, matricesTab, true, true, sc);
+									}else{
+										info = "This function only works with matrices which have the same size";
+									}
+								}else{
+									info = "CALC-matrix1-ADD waits as last parameter the matrix2's name you want to add";
+								}
+							}else{
+								info = "CALC-matrix1-ADD waits as last parameter the matrix2's name you want to add";
+							}
+						}else if(mainWhile_sc.hasNext("SUB")){
+							mainWhile_sc.next();
+							if(mainWhile_sc.hasNext()){
+								name2 = mainWhile_sc.next();
+								id2 = searchMatrix(name2, matricesTab);
+								if(id2 != -1){
+									if(matricesTab[id1].subtract(matricesTab[id2]) != null){
+										matricesTab = saveTemp(matricesTab[id1].subtract(matricesTab[id2]), matricesTab);
+										showMatrix(matricesTab.length-1, matricesTab, true, true, sc);
+									}else{
+										info = "This function only works with matrices which have the same size";
+									}
+								}else{
+									info = "CALC-matrix1-SUB waits as last parameter the matrix2's name you want to subtract";
+								}
+							}else{
+								info = "CALC-matrix1-SUB waits as last parameter the matrix2's name you want to subtract";
+							}
 						}else{
 							info = "CALC function waits for a valid command to process";
 						}
@@ -143,7 +226,7 @@ public class MainMatrix {
 					info = "Error while searching matrix";
 				}
 			}else if(mainWhile_sc.hasNext("HELP") || mainWhile_sc.hasNext("help")){
-				System.out.println("_'CREATE' allows you to create a new matrix, you'll be guided through the whole process\n__'RANDOM' create a matrix composed of N-values from -99 to 99\n__'VECTORIAL' allows you to create the column vectors of your matrix\n__'CUSTOMISED' allows you to edit your empty matric\n_'EDIT' allows you to edit a matrix, you'll be asked the matrix's name (case sensitive)\n_'SHOW_ALL' displays all the matrixes\n_'SHOW' displays one matrix, you'll be asked the matrix's name (case sensitive)\n_'CALC' allows you to compute matrices and waits parameters separated by '-' like 'CALC-matrix-DET'\n__'matrix1 name' take the first matrix to comupte\n___'DET' returns the determinant of matrix1\n___'VAL' returns the eigenvalues of matrix1\n___'VEC' returns the eigenvectors of matrix1\n___'REV' saves and displays the reversed matrix of matrix1\n___'TRANS' saves and displays the transposed matrix of matrix1\n_'QUIT' stops the programm\n\nIMPORTANT NOTES :\n_If you edit a matrix, all its computed versions (like transposed or reversed) will be deleted\n\n");
+				System.out.println("_'CREATE' allows you to create a new matrix, you'll be guided through the whole process\n__'RANDOM' create a matrix composed of N-values from -99 to 99\n__'VECTORIAL' allows you to create the column vectors of your matrix\n__'CUSTOMISED' allows you to edit your empty matric\n_'EDIT' allows you to edit a matrix, you'll be asked the matrix's name (case sensitive)\n_'SHOW_ALL' displays all the matrixes\n_'SHOW' displays one matrix, you'll be asked the matrix's name (case sensitive)\n_'CALC' allows you to compute matrices and waits parameters separated by '-' like 'CALC-matrix-DET'\n__'matrix1 name' take the first matrix to comupte\n___'DET' returns the determinant of matrix1\n___'VAL' returns the eigenvalues of matrix1\n___'VEC' returns the eigenvectors of matrix1\n___'REV' saves and displays the reversed matrix of matrix1\n___'TRANS' saves and displays the transposed matrix of matrix1\n_'QUIT' stops the programm\n\nIMPORTANT NOTES :\n_If you edit a matrix, all its computed versions (like transposed or reversed) will be deleted but not the multiplications, subtraction, addition or division\n\n");
 				pause(sc);
 			}else if(mainWhile_sc.hasNext("QUIT") || mainWhile_sc.hasNext("quit")){
 				quit = true;
@@ -168,6 +251,15 @@ public class MainMatrix {
         }
         pause(sc);
     }
+    
+    // Show a result which doesn't belong to the matricesTab
+    
+    public static void showResult(double[] result, Scanner sc) {
+		for(int i = 0; i < result.length; i++) {
+			System.out.println((i+1)+" ["+result[i]+"]");
+		}
+		pause(sc);
+	}
     
     // Show one identified matrix
     
