@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.Arrays; 
+import java.text.DecimalFormat;
 
 public class MainMatrix {
 	
@@ -264,13 +265,18 @@ public class MainMatrix {
     // Show one identified matrix
     
     public static boolean showMatrix(int id, Matrix[] matricesTab, boolean num, boolean pause, Scanner sc) {
+        DecimalFormat df = new DecimalFormat("###.##");
+        String temp;
         if(id != -1) {
 			System.out.println("| Matrix name :"+matricesTab[id].name);
 			System.out.println();
 			System.out.print("    ");
 			if(num){
 				for(int i = 0; i < matricesTab[id].data[0].length; i++) {
-					System.out.print("  "+(i+1)+" ");
+					System.out.print("  "+(i+1));
+					for(int k = 0; k < 6-String.valueOf((i+1)).length(); k++){
+						System.out.print(" ");
+					}
 				}
 			}
 			System.out.println();
@@ -280,7 +286,11 @@ public class MainMatrix {
 				}
 				System.out.print("|");
 				for(int j = 0; j < matricesTab[id].data[0].length; j++) {
-					System.out.print(" "+matricesTab[id].data[i][j]+" ");
+					temp = df.format(matricesTab[id].data[i][j]);
+					System.out.print(" "+temp+" ");
+					for(int k = 0; k < 6-String.valueOf(temp).length(); k++){
+						System.out.print(" ");
+					}
 				}
 				System.out.println("|");
 			}

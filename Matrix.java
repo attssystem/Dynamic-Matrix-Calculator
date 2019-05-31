@@ -99,16 +99,13 @@ public class Matrix{
             }
         }
         // Calculations
-        m01I.afficheMatrice();
         m01I = m01I.gaussJourdan();
-        m01I.afficheMatrice();
         // Gathering only the reversed Matrix
         for(int i = 0; i < this.data.length; i++){
             for(int j = 0; j < this.data.length; j++){
                 reversed.data[i][j] = m01I.data[i][j+this.data.length];
             }
         }
-        reversed.afficheMatrice();
         return reversed;
     }
 
