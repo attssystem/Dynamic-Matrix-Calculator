@@ -34,8 +34,9 @@ We're trying to conceive a matrix calculator which is able to perform most of th
 |					| + double[] getLine(int) |
 |					| + double[] getDiagonal() |
 |					| + boolean testCarree() |
-|					| + Matrix add(Matrix)
-|					| + Matrix substract(Matrix)
+|					| + Matrix add(Matrix) |
+|					| + Matrix substract(Matrix) |
+|					| + Matrix divide(Matrix) |
 
 ## Authors
 - Hugues KADI | ATTSSystem\

@@ -138,6 +138,16 @@ public class Matrix{
 			return null;
 		}
 	}
+	
+	public Matrix divide(Matrix m02){
+		if(this.testCarree() && m02.testCarree() && this.determinant() != 0  && m02.determinant() != 0) {
+			Matrix m01D = this.multiplyM(m02.reverse());
+			m01D.name = this.name+"divBy"+m02.name;
+			return m01D;
+		}else{
+			return null;
+		}
+	}
 
 	public Matrix multiplyM (Matrix m02){ 
 		if(this.data[0].length!=m02.data.length){ //Si le nombres de colonnes de la matrice n'est pas égale aux nombres de lignes de m02, retourne le pointeur nul
