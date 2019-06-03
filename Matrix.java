@@ -220,22 +220,26 @@ public class Matrix{
 		return mResult;
 	}
 
-    public double[] eigenValues(){ // A MODIFIER !!! NE FONCTIONNE QUE POUR LES MATRICE 2*2 !!!
-        double[] lambda;
-        double delta = Math.pow(this.trace(),2)-4*this.determinant();
-        if(delta>0){
-			lambda = new double[2];
-            lambda[0]=(this.trace()+Math.sqrt(delta))/2;
-            lambda[1]=(this.trace()-Math.sqrt(delta))/2;
-		}else{
-			if(delta==0){
-				lambda = new double[1];
-				lambda[0]=this.trace()/2;
-				}else{
-					return null; 
+    public double[] eigenValues(){ 
+		if(this.data.length==this.data[0].length && this.data.length == 2){
+			double[] lambda;
+			double delta = Math.pow(this.trace(),2)-4*this.determinant();
+			if(delta>0){
+				lambda = new double[2];
+				lambda[0]=(this.trace()+Math.sqrt(delta))/2;
+				lambda[1]=(this.trace()-Math.sqrt(delta))/2;
+			}else{
+				if(delta==0){
+					lambda = new double[1];
+					lambda[0]=this.trace()/2;
+					}else{
+						return null; 
+					}
 				}
-			}
 				return lambda;
+		}else{
+			return null;
+		}
     }
         
     
