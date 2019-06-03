@@ -74,7 +74,7 @@ public class MainMatrix {
 							if(mainWhile_sc.hasNextInt()){
 								id2 = mainWhile_sc.nextInt();
 								if(id2 > 0 && id2 <= matricesTab[id1].data.length){
-									System.out.println("Displaying "+id2+"th column");
+									System.out.println("Displaying "+id2+"th line");
 									showResult(matricesTab[id1].getLine(id2-1), sc);
 								}else{
 									info = "CALC-matrix1-LINE waits as last parameter the line you're looking for [1;m]";
@@ -130,6 +130,14 @@ public class MainMatrix {
 							if(matricesTab[id1].testCarree() && matricesTab[id1].determinant() != 0){
 								matricesTab = saveTemp(matricesTab[id1].reverse(), matricesTab);
 								showMatrix(matricesTab.length-1, matricesTab, true, sc);
+							}else{
+								info = "The matrix isn't squared";
+							}
+						}else if(mainWhile_sc.hasNext("TRAC")){
+							if(matricesTab[id1].testCarree()){
+								clearScreen();
+								System.out.println(matricesTab[id1].name+"'s trace is "+matricesTab[id1].trace());
+								pause(sc);
 							}else{
 								info = "The matrix isn't squared";
 							}
@@ -420,7 +428,7 @@ public class MainMatrix {
 				}
 			}
 			// Delete computed matrixes from the edited one
-			id = searchMatrix(name+"_ech", matricesTab);
+			id = searchMatrix(name+"_rank", matricesTab);
 			if(id != -1) {
 				matricesTab[id].name = "deleted";
 			}
@@ -429,6 +437,12 @@ public class MainMatrix {
 				matricesTab[id].name = "deleted";
 			}
 			id = searchMatrix(name+"_rev", matricesTab);
+			if(id != -1) {
+				matricesTab[id].name = "deleted";
+			}id = searchMatrix(name+"_diagonal", matricesTab);
+			if(id != -1) {
+				matricesTab[id].name = "deleted";
+			}id = searchMatrix(name+"_passage", matricesTab);
 			if(id != -1) {
 				matricesTab[id].name = "deleted";
 			}

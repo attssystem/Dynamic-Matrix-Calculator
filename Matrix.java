@@ -184,7 +184,7 @@ public class Matrix{
 	public Matrix divide(Matrix m02){
 		if(this.testCarree() && m02.testCarree() && this.determinant() != 0  && m02.determinant() != 0) {
 			Matrix m01D = this.multiplyM(m02.reverse());
-			m01D.name = this.name+"divBy"+m02.name;
+			m01D.name = this.name+"_divBy_"+m02.name;
 			return m01D;
 		}else{
 			return null;
