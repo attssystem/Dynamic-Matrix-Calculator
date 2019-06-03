@@ -26,7 +26,7 @@ We're trying to conceive a matrix calculator which is able to perform most of th
 | + int searchMatrix(String, Matrix[]) | + Matrix multiplyM(Matrix) |
 | + boolean dynamicEditor(String, Matrix[], Scanner, String) | + Matrix multiplyS(int)			|
 | + Matrix[] saveTemp(Matrix, Matrix[]) | + double[] eigenValues() |
-| + Matrix[] updateTab(Matrix[], Matrix) | + getSousMatrice(int) |
+| + Matrix[] updateTab(Matrix[], Matrix) | + Matrix getSousMatrice(int) |
 | + void pause(Scanner) | + double determinant()|
 | + void clearScreen() | + Matrix transpose() |
 |						| + double trace() |
@@ -37,10 +37,12 @@ We're trying to conceive a matrix calculator which is able to perform most of th
 |					| + Matrix add(Matrix) |
 |					| + Matrix substract(Matrix) |
 |					| + Matrix divide(Matrix) |
+|					| + Matrix passage() |
+|					| + Matrix divide(Matrix) |
+|					| + Matrix rank() |
 
 ## Authors
 - Hugues KADI | ATTSSystem\
 UI, cmd interpreter and some matrix functions
 - Camille MARTIN | AstraleK\
-Matrix object, most of matric functions
-- Gautier ESCRIVA
+Matrix object, most of matrix functions
