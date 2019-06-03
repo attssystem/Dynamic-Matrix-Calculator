@@ -8,7 +8,7 @@ public class Matrix{
         if(rand) {
             for (int i=0;i<this.data.length;i++){
                 for (int j=0; j<this.data[i].length;j++){
-                    this.data[i][j]=(int)((Math.random()*200)-100); //entre -99 et 99    	 
+                    this.data[i][j]=(int)((Math.random()*200)-100); //entre -99 et 99     
                 }
 			}
         }
@@ -219,6 +219,23 @@ public class Matrix{
 		}
 		return mResult;
 	}
+	
+	public Matrix diagonalise(){
+		Matrix mdiagonal = new Matrix(2,2,this.name+"_diagonal",false);
+		mdiagonal.data[0][0]=eigenValues()[0];
+		mdiagonal.data[1][1]=eigenValues()[1];
+		return mdiagonal;
+	}
+	
+	public Matrix passage(){
+		Matrix mPassage = new Matrix(2,2,this.name+"_passage",false);
+		mPassage.data[0][0]=1;
+		mPassage.data[0][1]=1;
+		mPassage.data[1][0]=-(this.data[0][0]-this.eigenValues()[0]);
+		mPassage.data[1][1]=-(this.data[0][0]-this.eigenValues()[1]);
+		return mPassage; 
+	}
+		
 
     public double[] eigenValues(){ 
 		if(this.data.length==this.data[0].length && this.data.length == 2){
@@ -226,8 +243,8 @@ public class Matrix{
 			double delta = Math.pow(this.trace(),2)-4*this.determinant();
 			if(delta>0){
 				lambda = new double[2];
-				lambda[0]=(this.trace()+Math.sqrt(delta))/2;
-				lambda[1]=(this.trace()-Math.sqrt(delta))/2;
+				lambda[0]=Math.max(((this.trace()+Math.sqrt(delta))/2),((this.trace()-Math.sqrt(delta))/2));
+				lambda[1]=Math.min(((this.trace()+Math.sqrt(delta))/2),((this.trace()-Math.sqrt(delta))/2));
 			}else{
 				if(delta==0){
 					lambda = new double[1];
