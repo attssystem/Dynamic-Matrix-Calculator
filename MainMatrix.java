@@ -93,19 +93,22 @@ public class MainMatrix {
 						}else if(mainWhile_sc.hasNext("REV")){
 							if(matricesTab[id1].testCarree() && matricesTab[id1].determinant() != 0){
 								matricesTab = saveTemp(matricesTab[id1].reverse(), matricesTab);
-								showMatrix(matricesTab.length-1, matricesTab, true, true, sc);
+								showMatrix(matricesTab.length-1, matricesTab, true, sc);
 							}else{
 								info = "The matrix isn't squared";
 							}
 						}else if(mainWhile_sc.hasNext("TRANS")){
 							matricesTab = saveTemp(matricesTab[id1].transpose(), matricesTab);
-							showMatrix(matricesTab.length-1, matricesTab, true, true, sc);
+							showMatrix(matricesTab.length-1, matricesTab, true, sc);
+						}else if(mainWhile_sc.hasNext("RANK")){
+							matricesTab = saveTemp(matricesTab[id1].rank(), matricesTab);
+							showMatrix(matricesTab.length-1, matricesTab, true, sc);
 						}else if(mainWhile_sc.hasNext("MULS")){
 							mainWhile_sc.next();
 							if(mainWhile_sc.hasNextInt()){
 								id2 = mainWhile_sc.nextInt();
 								matricesTab = saveTemp(matricesTab[id1].multiplyS(id2), matricesTab);
-								showMatrix(matricesTab.length-1, matricesTab, true, true, sc);
+								showMatrix(matricesTab.length-1, matricesTab, true, sc);
 							}else{
 								info = "CALC-matrix1-MULS waits as last parameter the scalar you want to multiply with";
 							}
@@ -117,7 +120,7 @@ public class MainMatrix {
 								if(id2 != -1){
 									if(matricesTab[id1].multiplyM(matricesTab[id2]) != null){
 										matricesTab = saveTemp(matricesTab[id1].multiplyM(matricesTab[id2]), matricesTab);
-										showMatrix(matricesTab.length-1, matricesTab, true, true, sc);
+										showMatrix(matricesTab.length-1, matricesTab, true, sc);
 									}else{
 										info = "This function only works if matrix1_n = matrix2_m";
 									}
@@ -135,7 +138,7 @@ public class MainMatrix {
 								if(id2 != -1){
 									if(matricesTab[id1].divide(matricesTab[id2]) != null){
 										matricesTab = saveTemp(matricesTab[id1].divide(matricesTab[id2]), matricesTab);
-										showMatrix(matricesTab.length-1, matricesTab, true, true, sc);
+										showMatrix(matricesTab.length-1, matricesTab, true, sc);
 									}else{
 										info = "This function only works if matrix1_n = matrix2_m";
 									}
@@ -153,7 +156,7 @@ public class MainMatrix {
 								if(id2 != -1){
 									if(matricesTab[id1].add(matricesTab[id2]) != null){
 										matricesTab = saveTemp(matricesTab[id1].add(matricesTab[id2]), matricesTab);
-										showMatrix(matricesTab.length-1, matricesTab, true, true, sc);
+										showMatrix(matricesTab.length-1, matricesTab, true, sc);
 									}else{
 										info = "This function only works with matrices which have the same size";
 									}
@@ -171,7 +174,7 @@ public class MainMatrix {
 								if(id2 != -1){
 									if(matricesTab[id1].subtract(matricesTab[id2]) != null){
 										matricesTab = saveTemp(matricesTab[id1].subtract(matricesTab[id2]), matricesTab);
-										showMatrix(matricesTab.length-1, matricesTab, true, true, sc);
+										showMatrix(matricesTab.length-1, matricesTab, true, sc);
 									}else{
 										info = "This function only works with matrices which have the same size";
 									}
@@ -216,7 +219,7 @@ public class MainMatrix {
 				Scanner createWhile_sc = new Scanner(cmd);
 				if(createWhile_sc.hasNext("RANDOM") || createWhile_sc.hasNext("random")){
 					matricesTab = updateTab(matricesTab, new Matrix(a, b, name, true));
-					showMatrix(searchMatrix(name, matricesTab), matricesTab, false, true, sc);
+					showMatrix(searchMatrix(name, matricesTab), matricesTab, true, sc);
 				}else if(createWhile_sc.hasNext("VECTORIAL") || createWhile_sc.hasNext("vectorial")){
 					matricesTab = updateTab(matricesTab, new Matrix(a, b, name, false));
 					//Using specifically sized matrix instead of vectors
@@ -239,11 +242,11 @@ public class MainMatrix {
 			else if(mainWhile_sc.hasNext("SHOW") || mainWhile_sc.hasNext("show")){
 				System.out.print("Matrix Name ? >");
 				cmd = sc.next();
-				if(!showMatrix(searchMatrix(cmd, matricesTab), matricesTab, false, true, sc)){
+				if(!showMatrix(searchMatrix(cmd, matricesTab), matricesTab, true, sc)){
 					info = "Error while searching matrix";
 				}
 			}else if(mainWhile_sc.hasNext("HELP") || mainWhile_sc.hasNext("help")){
-				System.out.println("_'CREATE' allows you to create a new matrix, you'll be guided through the whole process\n__'RANDOM' create a matrix composed of N-values from -99 to 99\n__'VECTORIAL' allows you to create the column vectors of your matrix\n__'CUSTOMISED' allows you to edit your empty matric\n_'EDIT' allows you to edit a matrix, you'll be asked the matrix's name (case sensitive)\n_'SHOW_ALL' displays all the matrixes\n_'SHOW' displays one matrix, you'll be asked the matrix's name (case sensitive)\n_'CALC' allows you to compute matrices and waits parameters separated by '-' like 'CALC-matrix-DET'\n__'matrix1 name' takes the first matrix to comupte\n___'DET' returns the determinant of matrix1\n___'VAL' returns the eigenvalues of matrix1\n___'VEC' returns the eigenvectors of matrix1\n___'REV' saves and displays the reversed matrix of matrix1\n___'TRANS' saves and displays the transposed matrix of matrix1\n___'MULM' multiplies matrix1 by matrix2, waits for matrix2's name as last parameter\n___'MULS' multiplies matrix1 by a scalar, waits for a scalar as last parameter\n___'DIV' divides matrix1 by matrix2, waits for matrix2's name as last parameter\n___'ADD' adds matrix1 to matrix2, waits for matrix2's name as last parameter\n___'SUB' subtracts matrix2 to matrix1, waits for matrix2's name as last parameter\n____'matrix2 name' takes the second matrix to compute (only for MULM, DIV, ADD, SUB)\n____'scalar' takes a scalar to compute MULS operation\n_'QUIT' stops the programm\n\nIMPORTANT NOTES :\n_If you edit a matrix, all its computed versions (like transposed or reversed) will be deleted but not the multiplications, subtractions, additions or divisions\n\n");
+				System.out.println("_'CREATE' allows you to create a new matrix, you'll be guided through the whole process\n__'RANDOM' create a matrix composed of N-values from -99 to 99\n__'VECTORIAL' allows you to create the column vectors of your matrix\n__'CUSTOMISED' allows you to edit your empty matric\n_'EDIT' allows you to edit a matrix, you'll be asked the matrix's name (case sensitive)\n_'SHOW_ALL' displays all the matrixes\n_'SHOW' displays one matrix, you'll be asked the matrix's name (case sensitive)\n_'CALC' allows you to compute matrices and waits parameters separated by '-' like 'CALC-matrix-DET'\n__'matrix1 name' takes the first matrix to comupte\n___'DET' returns the determinant of matrix1\n___'VAL' returns the eigenvalues of matrix1\n___'VEC' returns the eigenvectors of matrix1\n___'RANK' returns the ranked matrix of matrix1\n___'REV' saves and displays the reversed matrix of matrix1\n___'TRANS' saves and displays the transposed matrix of matrix1\n___'MULM' multiplies matrix1 by matrix2, waits for matrix2's name as last parameter\n___'MULS' multiplies matrix1 by a scalar, waits for a scalar as last parameter\n___'DIV' divides matrix1 by matrix2, waits for matrix2's name as last parameter\n___'ADD' adds matrix1 to matrix2, waits for matrix2's name as last parameter\n___'SUB' subtracts matrix2 to matrix1, waits for matrix2's name as last parameter\n____'matrix2 name' takes the second matrix to compute (only for MULM, DIV, ADD, SUB)\n____'scalar' takes a scalar to compute MULS operation\n_'QUIT' stops the programm\n\nIMPORTANT NOTES :\n_If you edit a matrix, all its computed versions (like transposed or reversed) will be deleted but not the multiplications, subtractions, additions or divisions\n\n");
 				pause(sc);
 			}else if(mainWhile_sc.hasNext("QUIT") || mainWhile_sc.hasNext("quit")){
 				quit = true;
@@ -262,7 +265,7 @@ public class MainMatrix {
     public static void showMatrices(Matrix[] matricesTab, Scanner sc) {
         for(int i = 0; i < matricesTab.length; i++) {
 			if(!matricesTab[i].name.equals("deleted")) {
-				showMatrix(i, matricesTab, false, false, sc);
+				showMatrix(i, matricesTab, false, sc);
 				System.out.println();
 			}
         }
@@ -280,26 +283,22 @@ public class MainMatrix {
     
     // Show one identified matrix
     
-    public static boolean showMatrix(int id, Matrix[] matricesTab, boolean num, boolean pause, Scanner sc) {
+    public static boolean showMatrix(int id, Matrix[] matricesTab, boolean pause, Scanner sc) {
         DecimalFormat df = new DecimalFormat("###.##");
         String temp;
         if(id != -1) {
 			System.out.println("| Matrix name :"+matricesTab[id].name);
 			System.out.println();
 			System.out.print("    ");
-			if(num){
-				for(int i = 0; i < matricesTab[id].data[0].length; i++) {
-					System.out.print("  "+(i+1));
-					for(int k = 0; k < 6-String.valueOf((i+1)).length(); k++){
-						System.out.print(" ");
-					}
+			for(int i = 0; i < matricesTab[id].data[0].length; i++) {
+				System.out.print("  "+(i+1));
+				for(int k = 0; k < 6-String.valueOf((i+1)).length(); k++){
+					System.out.print(" ");
 				}
 			}
 			System.out.println();
 			for(int i = 0; i < matricesTab[id].data.length; i++) {
-				if(num) {
-					System.out.print(" "+(i+1)+" ");
-				}
+				System.out.print(" "+(i+1)+" ");
 				System.out.print("|");
 				for(int j = 0; j < matricesTab[id].data[0].length; j++) {
 					temp = df.format(matricesTab[id].data[i][j]);
@@ -354,7 +353,7 @@ public class MainMatrix {
 				System.out.println("| DYNAMIC EDITOR |");
 				System.out.println("------------------");
 				System.out.println("| Info :"+com);
-				showMatrix(id, matricesTab, true, false, sc);
+				showMatrix(id, matricesTab, false, sc);
 				System.out.print("DynEdit_CMD> ");
 				input = sc.next();
 				Scanner dynEdit_sc = new Scanner(input);
@@ -374,11 +373,9 @@ public class MainMatrix {
 					dynEdit_sc.close();
 					quit = true;
 					info = "To begin, you can create your first Matrix using the 'CREATE' command\nand by letting the program guide you through the creation process,\nthen you can use 'EDIT', 'CALC', 'CREATE' again, 'SHOW', 'SHOW_ALL' or 'QUIT'.";
-				}else if(a == -1 || b == -1 || c == -1){
-					com = "Wrong input, retry (type 0 to leave)";	
 				}else{
 					dynEdit_sc.close();
-					if(a <= matricesTab[id].data.length && 0 < a && b <= matricesTab[id].data[a].length && 0 < b) {
+					if(a <= matricesTab[id].data.length && 0 < a && b <= matricesTab[id].data[0].length && 0 < b) {
 						matricesTab[id].data[a-1][b-1] = c;
 						com = "Change done !";
 					}else {

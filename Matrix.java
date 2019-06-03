@@ -13,9 +13,51 @@ public class Matrix{
 			}
         }
 	}
+	
+	public Matrix rank() {
+		Matrix m01G = new Matrix(this.data.length, this.data[0].length, this.name+"_rank", false);
+		for (int i = 0; i < this.data.length; i++){
+			for (int j = 0; j < this.data[0].length; j++){
+				m01G.data[i][j] = this.data[i][j];
+			}
+		}
+		
+		int ind = -1;
+		int j = 0;
+		double coef;
+		double temp;
+		for(int i = 0; i < m01G.data.length; i++){
+			ind = -1;
+			j = i;
+			while(j < m01G.data.length && ind  != -1){
+				if(m01G.data[i][j] != 0){
+					ind = j;
+				}
+				j++;
+			}
+			if(ind == -1){
+				// Do nothing and waits for the next column
+			}else{
+				for(int k = 0; k < m01G.data[0].length; k++) {
+					temp = m01G.data[1][k];
+					m01G.data[i][k] = m01G.data[ind][k];
+					m01G.data[ind][k] = temp;
+				}
+			}
+			for(int l = i+1; l < m01G.data.length; l++){
+					coef = m01G.data[l][i]/m01G.data[i][i];
+				for(int m = i; m < m01G.data[0].length; m++){
+					// System.out.println(m01G.data[l][m]);
+					m01G.data[l][m] = m01G.data[l][m]-m01G.data[i][m]*coef;
+					// System.out.println(m01G.data[l][m]);
+				}
+			}
+		}
+		return m01G;
+	}
     
     public Matrix gaussJourdan() {
-		Matrix m01G = new Matrix(this.data.length, this.data[0].length, this.name+"_ech", false);
+		Matrix m01G = new Matrix(this.data.length, this.data[0].length, this.name+"_rankr", false);
 		for (int i = 0; i < this.data.length; i++){
 			for (int j = 0; j < this.data[0].length; j++){
 				m01G.data[i][j] = this.data[i][j];
