@@ -2,10 +2,14 @@ public class Matrix{
 	double[][] data;
     String name;
 
-	public Matrix (int l, int n, String na, boolean rand) { //Génération aléatoire avec nombre de ligne et de colonne données
+	/* Constructeur
+	 * L'utilisateur donne un nombre de lignes et un nombre de colonnes.
+	 * Permet de générer aléatoirement une matrice. Si rand == true
+	 * Ou de générer une matrice nulle. Si rand == false */
+	public Matrix (int l, int n, String na, boolean rand) {
     	this.data = new double [l][n];
         this.name = na;
-        if(rand) {
+        if(rand) { //Génération aléatoire si rand==true. Sinon, génère une matrice nulle
             for (int i=0;i<this.data.length;i++){
                 for (int j=0; j<this.data[i].length;j++){
                     this.data[i][j]=(int)((Math.random()*200)-100); //entre -99 et 99     
@@ -151,7 +155,7 @@ public class Matrix{
         return reversed;
     }
 
-
+	// soustractions de 2 matrices
 	public Matrix subtract(Matrix m02){
 		if(this.data.length==m02.data.length && this.data[0].length==m02.data[0].length){
 			Matrix mResult = new Matrix(this.data.length,this.data[0].length, this.name+"_sub_"+m02.name, false);
@@ -166,7 +170,7 @@ public class Matrix{
 		}
 	}
 	
-	
+	// additions de 2 matrices
 	public Matrix add(Matrix m02){
 		if(this.data.length==m02.data.length && this.data[0].length==m02.data[0].length){
 			Matrix mResult = new Matrix(this.data.length,this.data[0].length, this.name+"_add_"+m02.name, false);
@@ -181,6 +185,7 @@ public class Matrix{
 		}
 	}
 	
+	//division de matrice 1 par matrice 2 : multiplication par l'inverse de 1 par 2
 	public Matrix divide(Matrix m02){
 		if(this.testCarree() && m02.testCarree() && this.determinant() != 0  && m02.determinant() != 0) {
 			Matrix m01D = this.multiplyM(m02.reverse());
@@ -191,12 +196,13 @@ public class Matrix{
 		}
 	}
 
+	//Produit de 2 matrices
 	public Matrix multiplyM (Matrix m02){ 
-		if(this.data[0].length!=m02.data.length){ //Si le nombres de colonnes de la matrice n'est pas égale aux nombres de lignes de m02, retourne le pointeur nul
+		if(this.data[0].length!=m02.data.length){ //Si le nombres de colonnes de la matrice n'est pas égale aux nombres de lignes de m02, retourne le pointeur null
 			return null;
 		}else{
 			Matrix mResult = new Matrix(this.data.length,m02.data[0].length, this.name+"_mulm_"+m02.name, false);
-			for (int i=0;i<mResult.data.length;i++){
+			for (int i=0;i<mResult.data.length;i++){ 
 				for (int j=0;j<mResult.data[0].length;j++){
 					for (int n=0;n<this.data[0].length;n++){
 						mResult.data[i][j]+=this.data[i][n]*m02.data[n][j];
@@ -209,7 +215,7 @@ public class Matrix{
 
 		
 		
-
+	// produit d'une matrice par un scalaire
 	public Matrix multiplyS (int scalaire){
 		Matrix mResult = new Matrix(this.data.length, this.data[0].length, this.name+"_muls_"+scalaire, false);
 		for (int i=0;i<this.data.length;i++){
@@ -220,28 +226,30 @@ public class Matrix{
 		return mResult;
 	}
 	
+	//Diagonalise une matrice 2*2 à partir des valeurs propres
 	public Matrix diagonalise(){
 		Matrix mdiagonal = new Matrix(2,2,this.name+"_diagonal",false);
 		mdiagonal.data[0][0]=eigenValues()[0];
 		mdiagonal.data[1][1]=eigenValues()[1];
-		return mdiagonal;
+		return mdiagonal; // Si la matrice n'est pas 2*2, la classe MainMatrix gère l'erreur
 	}
 	
+	//Matrices de passage. Ne sont pas "optimisées" mais permettent de décrire deux vecteurs pour former la méthode de passage
 	public Matrix passage(){
 		Matrix mPassage = new Matrix(2,2,this.name+"_passage",false);
-		mPassage.data[0][0]=1;
-		mPassage.data[0][1]=1;
-		mPassage.data[1][0]=-(this.data[0][0]-this.eigenValues()[0]);
-		mPassage.data[1][1]=-(this.data[0][0]-this.eigenValues()[1]);
+		mPassage.data[0][0]=1; // On fixe la première coordonnée à 1
+		mPassage.data[0][1]=1; // idem
+		mPassage.data[1][0]=-(this.data[0][0]-this.eigenValues()[0]); // solution générique de l'équation permettant de décrire les vecteurs propres
+		mPassage.data[1][1]=-(this.data[0][0]-this.eigenValues()[1]); // idem
 		return mPassage; 
 	}
 		
-
+	//calcul des valeurs propres pour les matrices 2*2
     public double[] eigenValues(){ 
-		if(this.data.length==this.data[0].length && this.data.length == 2){
+		if(this.data.length==this.data[0].length && this.data.length == 2){ //teste si la matrice est de taille 2*2
 			double[] lambda;
 			double delta = Math.pow(this.trace(),2)-4*this.determinant();
-			if(delta>0){
+			if(delta>0){ 
 				lambda = new double[2];
 				lambda[0]=Math.max(((this.trace()+Math.sqrt(delta))/2),((this.trace()-Math.sqrt(delta))/2));
 				lambda[1]=Math.min(((this.trace()+Math.sqrt(delta))/2),((this.trace()-Math.sqrt(delta))/2));
@@ -249,29 +257,30 @@ public class Matrix{
 				if(delta==0){
 					lambda = new double[1];
 					lambda[0]=this.trace()/2;
-					}else{
+					}else{ //si le delta n'est pas nul ou n'est pas positif, alors il est négatif. Les valeurs propres sont donc complexes, et nous ne gérons pas les complexes
 						return null; 
 					}
 				}
 				return lambda;
-		}else{
+		}else{ // si la matrice n'est pas 2*2, on renvoie le pointeur null. MainMatrix gère l'erreur
 			return null;
 		}
     }
         
-    
+    /* Permet d'extraire une "sous matrice" (voir compte rendu pour les aspects mathématiques)
+     * est utilisé pour le calcul du déterminant */
 	public Matrix getSousMatrice(int quelInd){
     	int n=0;
-    	Matrix m01S = new Matrix (this.data.length-1,this.data.length-1, "m01S", false);
-    	if (quelInd==-1){
-   		 m01S=this;
+    	Matrix m01S = new Matrix (this.data.length-1,this.data.length-1, "m01S", false); 
+    	if (quelInd==-1){ //si la matrice est de taille 1*1 (voir code déterminant)
+   		 m01S=this; //le déterminant d'une matrice 1*1 est le terme lui-même
    	 }else{
    		 for (int i=0;i<this.data.length;i++){
-   			 for (int j=1;j<this.data.length;j++){
-   				 if(i!=quelInd){
-   					 if(i<quelInd){
+   			 for (int j=1;j<this.data.length;j++){ //On parcours le tableau depuis la 2ème colonne. (cofacteurs de j=0)
+   				 if(i!=quelInd){ // On supprime la ligne de cofacteurs de coordonnées i=quelInd et j=0
+   					 if(i<quelInd){ //Avant la ligne à supprimer : remplit le tableau en suivant i
    						 m01S.data[i][j-1]=this.data[i][j];
-   					 }else{
+   					 }else{ // après la ligne à supprimer : remplit le tableau en suivant i+1
    						 m01S.data[i-1][j-1]=this.data[i][j];
    					 }
    				 }
@@ -281,20 +290,23 @@ public class Matrix{
    	 return m01S;
 	}
            	 
-     	 
-	public double determinant(){ // ne fonctionne que pour les matrices carrées. Trouver comment faire le garde fou.
-    	double d=0;
-    	if(this.data.length == 1){
+    /* Calcul du déterminant
+     * utilisation des fonctions récursives
+     * voir le compte rendu pour l'explication algorithmique
+     */ 	 
+	public double determinant(){ // ne fonctionne que pour les matrices carrées. Erreur gérée depuis la MainMatrix.
+    	double d=0; 
+    	if(this.data.length == 1){ //"Première condition" : matrice de taille 1*1
         	d=this.getSousMatrice(-1).data[0][0];
    	 }else{
    		 for(int i=0;i<this.data.length;i++){
-   			 d+=(Math.pow(-1,i)*this.data[i][0]*getSousMatrice(i).determinant());
+   			 d+=(Math.pow(-1,i)*this.data[i][0]*getSousMatrice(i).determinant()); //Fonction récursive
    		 }
    	 }
    	 return d;
     }
     
-    
+    // transposition : inverse lignes et colonnes
 	public Matrix transpose(){
     	Matrix m01T = new Matrix(this.data[0].length,this.data.length, this.name+"_trans", false);
     	for (int i=0;i<this.data.length;i++){
@@ -306,7 +318,11 @@ public class Matrix{
 	}
        	 
     
-	public double trace(){ // Ne fonctionne qu'avec matrices carrées !
+	/*calcul de la trace
+	 * somme des éléments diagonaux
+	 * pour les matrices carrées : erreur gérée depuis MainMatrix
+	 */
+	public double trace(){ 
     	double[] diagonal = this.getDiagonal();
     	double Trace = 0;
     	for (int i=0; i<diagonal.length;i++){
@@ -315,7 +331,10 @@ public class Matrix{
 	return Trace;
 	}
     
-	public double[] getColumn(int whichColumn){ //Renvoie un tableau 1D contenant une colonne de la matrice que l'utilisateur selectionnera
+    /* Extraire la colonne d'une matrice
+     * Renvoie un tableau 1D contenant une colonne de la matrice que l'utilisateur selectionnera
+     */
+	public double[] getColumn(int whichColumn){ 
     	double[] Column = new double[this.data.length];
     	for (int i=0;i<Column.length;i++){
         	Column[i]=this.data[i][whichColumn];
@@ -323,7 +342,10 @@ public class Matrix{
     	return Column;
 	}
     
-	public double[] getLine(int whichLine){ //Renvoie un tableau 1D contenant une ligne de la matrice que l'utilisateur selectionnera
+    /* Extraire la ligne d'une matrice
+     * Renvoie un tableau 1D contenant une ligne de la matrice que l'utilisateur selectionnera
+     */
+	public double[] getLine(int whichLine){ 
     	double[] line = new double[this.data[0].length];
     	for (int i=0;i<line.length;i++){
         	line[i]=this.data[whichLine][i];
@@ -331,9 +353,12 @@ public class Matrix{
     	return line;
 	}
     
-	public double[] getDiagonal() { //Renvoie un tableau 1D contenant la diagonale de la matrice
+    /*Extraire la diagonale d'une matrice
+     * Renvoie un tableau 1D contenant la diagonale de la matrice
+     */
+	public double[] getDiagonal() {
 
-    	if(!this.testCarree()){ // Si la matrice n'est pas carrée, retourne le pointeur nul.
+    	if(!this.testCarree()){ // Si la matrice n'est pas carrée, retourne le pointeur null
 			return null;
 		}else{
 			double[] diagonal = new double[this.data.length]; 
@@ -346,8 +371,8 @@ public class Matrix{
 	}
 
     
-    
-	public boolean testCarree() { // teste si la matrice est carrée : renvoie "true" si elle est carrée, false sinon. Penser à intégrer ça dans les fonctions.
+    // Teste si la matrice est carrée
+	public boolean testCarree() { 
     	if (this.data.length == this.data[0].length) {
         	return true;
     	}else{
@@ -355,8 +380,8 @@ public class Matrix{
     	}
 	}
     
-
-	public void afficheMatrice(){ //temporaire : Juste pour tester les programmes
+	//pour debug
+	/*public void afficheMatrice(){ 
     	for (int i=0;i<this.data.length;i++){
         	for (int j=0; j<this.data[i].length;j++){
             	System.out.print(this.data[i][j]+" ");
@@ -364,7 +389,7 @@ public class Matrix{
         	System.out.println();
     	}
     	System.out.println();
-	}
+	}*/
 	
     
 }
