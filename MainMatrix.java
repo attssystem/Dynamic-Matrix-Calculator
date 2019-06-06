@@ -25,6 +25,8 @@ public class MainMatrix {
 		info = "To begin, you can create your first Matrix using the 'CREATE' command\nand by letting the program guide you through the creation process,\nthen you can use 'EDIT', 'CALC', 'CREATE', 'SHOW', 'SHOW_ALL' again, 'HELP' or 'QUIT'.";
 		System.out.println();
         
+        // Main loop (wait for user command)
+        
         while(!quit) {
 			System.out.println("Info : "+info);
 			System.out.print("CMD>");
