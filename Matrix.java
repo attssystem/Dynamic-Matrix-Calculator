@@ -18,6 +18,8 @@ public class Matrix{
         }
 	}
 	
+	// Returns ranked matrix 
+	
 	public Matrix rank() {
 		Matrix m01G = new Matrix(this.data.length, this.data[0].length, this.name+"_rank", false);
 		for (int i = 0; i < this.data.length; i++){
@@ -25,6 +27,8 @@ public class Matrix{
 				m01G.data[i][j] = this.data[i][j];
 			}
 		}
+		
+		// Check if "pivot" is null, if yes, switch lines, else continue and rank
 		
 		int ind = -1;
 		int j = 0;
@@ -51,14 +55,14 @@ public class Matrix{
 			for(int l = i+1; l < m01G.data.length; l++){
 					coef = m01G.data[l][i]/m01G.data[i][i];
 				for(int m = i; m < m01G.data[0].length; m++){
-					// System.out.println(m01G.data[l][m]);
 					m01G.data[l][m] = m01G.data[l][m]-m01G.data[i][m]*coef;
-					// System.out.println(m01G.data[l][m]);
 				}
 			}
 		}
 		return m01G;
 	}
+    
+    // Used for reversed matrix, returns reduced ranked matrix
     
     public Matrix gaussJourdan() {
 		Matrix m01G = new Matrix(this.data.length, this.data[0].length, this.name+"_rankr", false);
@@ -78,7 +82,6 @@ public class Matrix{
 		for(int j = 0; j < m01G.data[0].length; j++) {
 			if((r+1) < m01G.data.length) {
 				// Look for a maximum
-				// System.out.println((r+1)+" "+j);
 				max = m01G.data[r+1][j];
 				k = r+1;
 				for(int i = r+2; i < m01G.data.length; i++) {
@@ -95,9 +98,6 @@ public class Matrix{
 					for(int i = 0; i < m01G.data[0].length; i++) {
 						m01G.data[k][i] = m01G.data[k][i]/temp2;
 					}
-					// System.out.println("divide "+k);
-					// System.out.println(temp2);
-					// m01G.afficheMatrice();
 					
 					// Switching k and r lines
 					for(int i = 0; i < m01G.data[0].length; i++) {
@@ -105,8 +105,6 @@ public class Matrix{
 						m01G.data[k][i] = m01G.data[r][i];
 						m01G.data[r][i] = temp;
 					}
-					// System.out.println("switch");
-					// m01G.afficheMatrice();
 					
 					// Other lines simplified
 					for(int i = 0; i < m01G.data.length; i++) {
@@ -117,14 +115,13 @@ public class Matrix{
 							}
 						}
 					}
-					// System.out.println("simplification");
-					// m01G.afficheMatrice();
 				}
 			}
 		}
-		// m01G.afficheMatrice();
 		return m01G;
 	}
+    
+	// Returns the reversed matrix using augemented matrix and gaussJourdan
     
     public Matrix reverse(){
         // Test square parameters and if det != 0 !
