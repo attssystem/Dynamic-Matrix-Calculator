@@ -41,6 +41,10 @@ We're trying to conceive a matrix calculator which is able to perform most of th
 |					| + Matrix divide(Matrix) |
 |					| + Matrix rank() |
 
+## Jar creation reminder
+
+`jar cvfm MANIFEST.MF DynamicMatrixCalculator.jar *.class` 
+
 ## Authors
 - Hugues KADI | ATTSSystem\
 UI, cmd interpreter and some matrix functions
