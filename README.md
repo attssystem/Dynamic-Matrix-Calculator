@@ -1,4 +1,4 @@
-# Dynamic-Matric-Calculator
+# Dynamic-Matrix-Calculator
 
 ## Description
 

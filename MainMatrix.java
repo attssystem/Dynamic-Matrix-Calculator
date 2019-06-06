@@ -19,15 +19,13 @@ public class MainMatrix {
         
         Scanner sc = new Scanner(System.in);
         
-        // Tests
-        
-        matricesTab = updateTab(matricesTab, new Matrix(3,3,"TEST", true));
-		
 		// Starting UI
 		
 		clearScreen();
 		info = "To begin, you can create your first Matrix using the 'CREATE' command\nand by letting the program guide you through the creation process,\nthen you can use 'EDIT', 'CALC', 'CREATE', 'SHOW', 'SHOW_ALL' again, 'HELP' or 'QUIT'.";
 		System.out.println();
+        
+        // Main loop (wait for user command)
         
         while(!quit) {
 			System.out.println("Info : "+info);
@@ -61,6 +59,7 @@ public class MainMatrix {
 							if(mainWhile_sc.hasNextInt()){
 								id2 = mainWhile_sc.nextInt();
 								if(id2 > 0 && id2 <= matricesTab[id1].data[0].length){
+									System.out.println("Displaying "+id2+"th column");
 									showResult(matricesTab[id1].getColumn(id2-1), sc);
 								}else{
 									info = "CALC-matrix1-COL waits as last parameter the column you're looking for [1;n]";
@@ -73,6 +72,7 @@ public class MainMatrix {
 							if(mainWhile_sc.hasNextInt()){
 								id2 = mainWhile_sc.nextInt();
 								if(id2 > 0 && id2 <= matricesTab[id1].data.length){
+									System.out.println("Displaying "+id2+"th line");
 									showResult(matricesTab[id1].getLine(id2-1), sc);
 								}else{
 									info = "CALC-matrix1-LINE waits as last parameter the line you're looking for [1;m]";
@@ -87,13 +87,55 @@ public class MainMatrix {
 								showResult(matricesTab[id1].getDiagonal(), sc);
 							}
 						}else if(mainWhile_sc.hasNext("VAL")){
-							// Can't compute eigenval for now
+							if(matricesTab[id1].data.length == 2 && matricesTab[id1].data[0].length == 2){
+								clearScreen();
+								if(matricesTab[id1].eigenValues().length == 1){
+									System.out.println("Only one eigenvalue => lambda="+matricesTab[id1].eigenValues()[0]);
+									pause(sc);
+								}else if(matricesTab[id1].eigenValues().length == 2){
+									System.out.println("Two eigenvalue => lambda1="+matricesTab[id1].eigenValues()[0]+" & lambda2="+matricesTab[id1].eigenValues()[1]);
+									pause(sc);
+								}else{
+									System.out.println("Solutions are complexes");
+									pause(sc);
+								}
+							}else{
+								info = "The matrix needs to be 2x2";
+							}
 						}else if(mainWhile_sc.hasNext("VEC")){
-							// Can't compute eigenvec for now
+							if(matricesTab[id1].data.length == 2 && matricesTab[id1].data[0].length == 2){
+								if(matricesTab[id1].eigenValues().length == 2){
+									matricesTab = saveTemp(matricesTab[id1].passage(), matricesTab);
+									showMatrix(matricesTab.length-1, matricesTab, true, sc);
+								}else{
+									info = matricesTab[id1].name+" doesn't have two real solutions, can't compute passage matrix";
+								}
+							}else{
+								info = "The matrix needs to be 2x2";
+							}
+						}else if(mainWhile_sc.hasNext("DIAGO")){
+							if(matricesTab[id1].data.length == 2 && matricesTab[id1].data[0].length == 2){
+								if(matricesTab[id1].eigenValues().length == 2){
+									matricesTab = saveTemp(matricesTab[id1].diagonalise(), matricesTab);
+									showMatrix(matricesTab.length-1, matricesTab, true, sc);
+								}else{
+									info = matricesTab[id1].name+" doesn't have two real solutions, can't compute passage matrix";
+								}
+							}else{
+								info = "The matrix needs to be 2x2";
+							}
 						}else if(mainWhile_sc.hasNext("REV")){
 							if(matricesTab[id1].testCarree() && matricesTab[id1].determinant() != 0){
 								matricesTab = saveTemp(matricesTab[id1].reverse(), matricesTab);
 								showMatrix(matricesTab.length-1, matricesTab, true, sc);
+							}else{
+								info = "The matrix isn't squared";
+							}
+						}else if(mainWhile_sc.hasNext("TRAC")){
+							if(matricesTab[id1].testCarree()){
+								clearScreen();
+								System.out.println(matricesTab[id1].name+"'s trace is "+matricesTab[id1].trace());
+								pause(sc);
 							}else{
 								info = "The matrix isn't squared";
 							}
@@ -246,7 +288,7 @@ public class MainMatrix {
 					info = "Error while searching matrix";
 				}
 			}else if(mainWhile_sc.hasNext("HELP") || mainWhile_sc.hasNext("help")){
-				System.out.println("_'CREATE' allows you to create a new matrix, you'll be guided through the whole process\n__'RANDOM' create a matrix composed of N-values from -99 to 99\n__'VECTORIAL' allows you to create the column vectors of your matrix\n__'CUSTOMISED' allows you to edit your empty matric\n_'EDIT' allows you to edit a matrix, you'll be asked the matrix's name (case sensitive)\n_'SHOW_ALL' displays all the matrixes\n_'SHOW' displays one matrix, you'll be asked the matrix's name (case sensitive)\n_'CALC' allows you to compute matrices and waits parameters separated by '-' like 'CALC-matrix-DET'\n__'matrix1 name' takes the first matrix to comupte\n___'DET' returns the determinant of matrix1\n___'VAL' returns the eigenvalues of matrix1 (only for 2x2 matrixes)\n___'VEC' returns the eigenvectors of matrix1 (only for 2x2 matrixes)\n___'RANK' returns the ranked matrix of matrix1\n___'REV' saves and displays the reversed matrix of matrix1\n___'TRANS' saves and displays the transposed matrix of matrix1\n___'MULM' multiplies matrix1 by matrix2, waits for matrix2's name as last parameter\n___'MULS' multiplies matrix1 by a scalar, waits for a scalar as last parameter\n___'DIV' divides matrix1 by matrix2, waits for matrix2's name as last parameter\n___'ADD' adds matrix1 to matrix2, waits for matrix2's name as last parameter\n___'SUB' subtracts matrix2 to matrix1, waits for matrix2's name as last parameter\n____'matrix2 name' takes the second matrix to compute (only for MULM, DIV, ADD, SUB)\n____'scalar' takes a scalar to compute MULS operation\n_'QUIT' stops the programm\n\nIMPORTANT NOTES :\n_If you edit a matrix, all its computed versions (like transposed or reversed) will be deleted but not the multiplications, subtractions, additions or divisions\n\n");
+				System.out.println("_'CREATE' allows you to create a new matrix, you'll be guided through the whole process\n__'RANDOM' create a matrix composed of N-values from -99 to 99\n__'VECTORIAL' allows you to create the column vectors of your matrix\n__'CUSTOMISED' allows you to edit your empty matric\n_'EDIT' allows you to edit a matrix, you'll be asked the matrix's name (case sensitive)\n_'SHOW_ALL' displays all the matrixes\n_'SHOW' displays one matrix, you'll be asked the matrix's name (case sensitive)\n_'CALC' allows you to compute matrices and waits parameters separated by '-' like 'CALC-matrix-DET'\n__'matrix1 name' takes the first matrix to comupte\n___'DET' returns the determinant of matrix1\n___'VAL' returns the eigenvalues of matrix1 (only for 2x2 matrixes)\n___'VEC' returns the eigenvectors of matrix1 (only for 2x2 matrixes)\n___'DIAG' returns your matrix diagonal\n___'DIAGO' returns the diagonalised matrix of matrix1\n___'RANK' returns the ranked matrix of matrix1\n___'REV' saves and displays the reversed matrix of matrix1\n___'TRANS' saves and displays the transposed matrix of matrix1\n___'MULM' multiplies matrix1 by matrix2, waits for matrix2's name as last parameter\n___'MULS' multiplies matrix1 by a scalar, waits for a scalar as last parameter\n___'DIV' divides matrix1 by matrix2, waits for matrix2's name as last parameter\n___'ADD' adds matrix1 to matrix2, waits for matrix2's name as last parameter\n___'SUB' subtracts matrix2 to matrix1, waits for matrix2's name as last parameter\n____'matrix2 name' takes the second matrix to compute (only for MULM, DIV, ADD, SUB)\n____'scalar' takes a scalar to compute MULS operation\n_'QUIT' stops the programm\n\nIMPORTANT NOTES :\n_If you edit a matrix, all its computed versions (like transposed or reversed) will be deleted but not the multiplications, subtractions, additions or divisions\n_Do not use \"-\" in a matrix name\n\n");
 				pause(sc);
 			}else if(mainWhile_sc.hasNext("QUIT") || mainWhile_sc.hasNext("quit")){
 				quit = true;
@@ -384,7 +426,7 @@ public class MainMatrix {
 				}
 			}
 			// Delete computed matrixes from the edited one
-			id = searchMatrix(name+"_ech", matricesTab);
+			id = searchMatrix(name+"_rank", matricesTab);
 			if(id != -1) {
 				matricesTab[id].name = "deleted";
 			}
@@ -393,6 +435,12 @@ public class MainMatrix {
 				matricesTab[id].name = "deleted";
 			}
 			id = searchMatrix(name+"_rev", matricesTab);
+			if(id != -1) {
+				matricesTab[id].name = "deleted";
+			}id = searchMatrix(name+"_diagonal", matricesTab);
+			if(id != -1) {
+				matricesTab[id].name = "deleted";
+			}id = searchMatrix(name+"_passage", matricesTab);
 			if(id != -1) {
 				matricesTab[id].name = "deleted";
 			}
