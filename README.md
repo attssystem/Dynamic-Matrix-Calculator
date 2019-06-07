@@ -43,7 +43,7 @@ We're trying to conceive a matrix calculator which is able to perform most of th
 
 ## Jar creation reminder
 
-`jar cvfm MANIFEST.MF DynamicMatrixCalculator.jar *.class` 
+`jar cvfm DynamicMatrixCalculator.jar MANIFEST.MF *.class` 
 
 ## Authors
 - Hugues KADI | ATTSSystem\
